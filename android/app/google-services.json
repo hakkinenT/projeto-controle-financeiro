@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "171473344308",
+    "project_id": "projeto-controle-finance-e87ca",
+    "storage_bucket": "projeto-controle-finance-e87ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171473344308:android:407df6b06b1185ecdf3761",
+        "android_client_info": {
+          "package_name": "com.example.projeto_controle_financeiro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171473344308-qm0b5f6t2k77glertf1ph17gqg33ljnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNwuehXu6am-0Y0l53xlJyo_FkKQrU06M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171473344308-qm0b5f6t2k77glertf1ph17gqg33ljnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
