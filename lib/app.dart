@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_controle_financeiro/models/models.dart';
 import 'package:projeto_controle_financeiro/modules/userManagement/user_management.dart';
+import 'package:projeto_controle_financeiro/themes/app_typograph.dart';
+import 'package:projeto_controle_financeiro/themes/app_theme.dart';
 
 import 'modules/login/authentication/auth_service.dart';
+import 'themes/app_colors.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -12,9 +15,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppTheme.light,
       home: const RegisterTest(),
     );
   }
@@ -96,23 +97,54 @@ class _RegisterTestState extends State<RegisterTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Exemplo',
+        ),
+        actions: const [Icon(Icons.abc)],
+      ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 50,
-            ),
+            SizedBox(
+                height: 55,
+                width: double.maxFinite,
+                child:
+                    OutlinedButton(onPressed: () {}, child: Text('Exemplo'))),
             TextField(
               controller: nomeController,
-              decoration: const InputDecoration(hintText: 'Nome'),
+              decoration: InputDecoration(
+                  hintText: 'Nome',
+                  hintStyle: AppTypograph.hintText,
+                  label: Text(
+                    'Nome',
+                    style: AppTypograph.labelText,
+                  ),
+                  contentPadding: const EdgeInsets.all(16),
+                  filled: true,
+                  fillColor: const Color.fromRGBO(31, 170, 0, 0.1),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  alignLabelWithHint: true,
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor),
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  errorBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.informationErrorColor),
+                      borderRadius: BorderRadius.all(Radius.circular(8)))),
             ),
             const SizedBox(
               height: 15,
             ),
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(hintText: 'Email'),
+              decoration: const InputDecoration(
+                hintText: 'Email',
+              ),
             ),
             const SizedBox(
               height: 15,
