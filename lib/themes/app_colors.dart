@@ -16,4 +16,5 @@ class AppColors {
   static const informationSuccessColor = Color(0xFF4554E0);
   static const informationWarningColor = Color(0xFFE0E000);
   static const informationErrorColor = Color(0xFFA60C15);
+  static const fieldBackgroundColor = Color.fromRGBO(31, 170, 0, 0.1);
 }

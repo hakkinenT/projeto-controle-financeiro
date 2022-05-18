@@ -21,14 +21,14 @@ final outlinedButtonStyle = OutlinedButton.styleFrom(
     ));
 
 final textButtonStyle = TextButton.styleFrom(
-    primary: AppColors.primaryColor, textStyle: AppTypograph.buttonText);
+    primary: AppColors.primaryDarkColor, textStyle: AppTypograph.buttonText);
 
 final inputDecorationTheme = InputDecorationTheme(
     contentPadding: const EdgeInsets.all(16),
     hintStyle: AppTypograph.hintText,
     labelStyle: AppTypograph.labelText,
     filled: true,
-    fillColor: const Color.fromRGBO(31, 170, 0, 0.1),
+    fillColor: AppColors.fieldBackgroundColor,
     border: const OutlineInputBorder(
         borderSide: BorderSide.none, borderRadius: borderRadiusAll),
     alignLabelWithHint: true,
@@ -44,6 +44,7 @@ const iconThemeData = IconThemeData(color: AppColors.textColor, size: 30);
 class AppTheme {
   static ThemeData get light {
     return ThemeData(
+        primaryColor: AppColors.primaryColor,
         scaffoldBackgroundColor: AppColors.secondaryColor,
         iconTheme: iconThemeData,
         elevatedButtonTheme:
