@@ -64,7 +64,7 @@ class AppTypograph {
       textStyle: const TextStyle(
           fontSize: 16,
           letterSpacing: 1.25,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
           color: AppColors.textColor));
   static final caption = GoogleFonts.notoSans(
       textStyle: const TextStyle(fontSize: 12, color: AppColors.textColor));

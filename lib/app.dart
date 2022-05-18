@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_controle_financeiro/models/models.dart';
-import 'package:projeto_controle_financeiro/modules/userManagement/user_management.dart';
-import 'package:projeto_controle_financeiro/themes/app_typograph.dart';
+
 import 'package:projeto_controle_financeiro/themes/app_theme.dart';
+import 'package:projeto_controle_financeiro/widgets/buttons/button_google.dart';
+import 'package:projeto_controle_financeiro/widgets/buttons/custom_drop_down_button.dart';
+import 'package:projeto_controle_financeiro/widgets/buttons/custom_elevated_button.dart';
+import 'package:projeto_controle_financeiro/widgets/buttons/custom_outlined_button.dart';
+import 'package:projeto_controle_financeiro/widgets/dialogs/custom_alert_dialog.dart';
+import 'package:projeto_controle_financeiro/widgets/expanded_tile/custom_expanded_title.dart';
+import 'package:projeto_controle_financeiro/widgets/expanded_tile/expanded_item.dart';
+import 'package:projeto_controle_financeiro/widgets/fields/custom_text_field.dart';
 
 import 'modules/login/authentication/auth_service.dart';
 import 'themes/app_colors.dart';
@@ -94,6 +101,7 @@ class _RegisterTestState extends State<RegisterTest> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool customTileExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,68 +116,89 @@ class _RegisterTestState extends State<RegisterTest> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-                height: 55,
+            CustomExpandedTile(
+              title: 'teste',
+              prefixIcon: Icons.trending_down,
+              expandedItems: const [
+                ExpandedItem(description: 'teste', value: 12.0),
+                ExpandedItem(description: 'teste 2', value: 13.0),
+                ExpandedItem(description: 'teste 2', value: 13.0)
+              ],
+              onButtonPressed: () {
+                print('cliquei');
+              },
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            ButtonGoogle(
                 width: double.maxFinite,
-                child:
-                    OutlinedButton(onPressed: () {}, child: Text('Exemplo'))),
-            TextField(
-              controller: nomeController,
-              decoration: InputDecoration(
-                  hintText: 'Nome',
-                  hintStyle: AppTypograph.hintText,
-                  label: Text(
-                    'Nome',
-                    style: AppTypograph.labelText,
-                  ),
-                  contentPadding: const EdgeInsets.all(16),
-                  filled: true,
-                  fillColor: const Color.fromRGBO(31, 170, 0, 0.1),
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  alignLabelWithHint: true,
-                  focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.primaryColor),
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  errorBorder: const OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.informationErrorColor),
-                      borderRadius: BorderRadius.all(Radius.circular(8)))),
-            ),
+                height: 52,
+                onTap: () {
+                  print('botao google');
+                }),
             const SizedBox(
               height: 15,
             ),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                hintText: 'Email',
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(hintText: 'Senha'),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            ElevatedButton(
+            CustomOutlinedButton(
+                buttonLabel: 'Exemplo',
+                height: 52,
+                width: double.maxFinite,
                 onPressed: () async {
-                  UserModel? userModel = await UserManagement()
-                      .registrationWithEmailAndPassword(nomeController.text,
-                          emailController.text, passwordController.text);
-
-                  if (userModel != null) {
-                    print(userModel.displayName);
-                    print(userModel.email);
-                  } else {
-                    print('é nulo');
-                  }
-                },
-                child: const Text('Registrar'))
+                  showDialog<void>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext ctx) {
+                        return customAlertDialog(
+                            context: context,
+                            title: 'teste',
+                            message: 'teste message',
+                            informationColor: AppColors.informationErrorColor,
+                            informationIcon: Icons.dangerous,
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('OK'))
+                            ]);
+                      });
+                }),
+            const SizedBox(
+              height: 15,
+            ),
+            CustomElevatedButton(
+              buttonLabel: 'Exemplo',
+              onPressed: () {},
+              height: 52,
+              width: double.maxFinite,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            CustomTextFormField(
+              labelText: 'Nome',
+              readOnly: true,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            CustomTextFormField(labelText: 'E-mail'),
+            const SizedBox(
+              height: 15,
+            ),
+            CustomTextFormField(labelText: 'Senha'),
+            const SizedBox(
+              height: 15,
+            ),
+            CustomDropDownButton(
+                initialValue: 'olá',
+                hintText: 'Exemplo',
+                height: 52,
+                width: double.maxFinite,
+                items: const ['olá', 'alô', 'hello'],
+                enabled: false,
+                onChanged: (String? value) {})
           ],
         ),
       ),
