@@ -4,7 +4,7 @@ import 'package:projeto_controle_financeiro/app.dart';
 
 void main() async {
   _init();
-  runApp(const App());
+  runApp(App());
 }
 
 void _init() async {
