@@ -3,36 +3,26 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:projeto_controle_financeiro/themes/app_colors.dart';
 
 class AppTypograph {
-  static const headline3 = TextStyle(
-      fontFamily: 'Koulen',
-      fontSize: 32,
-      //height: 48,
-      color: AppColors.textColor);
-  static const headline4 = TextStyle(
-      fontFamily: 'Koulen',
-      fontSize: 26,
-      //height: 39,
-      color: AppColors.textColor);
-  static const headline5 = TextStyle(
-      fontFamily: 'Koulen',
-      fontSize: 22,
-      //height: 33,
-      color: AppColors.textColor);
-  static const headline6 = TextStyle(
-      fontFamily: 'Koulen',
-      fontSize: 18,
-      //height: 27,
-      color: AppColors.textColor);
-  static const subtitle1 = TextStyle(
-      fontFamily: 'Koulen',
-      fontSize: 16,
-      //height: 24,
-      color: AppColors.textColor);
-  static const subtitle2 = TextStyle(
-      fontFamily: 'Koulen',
-      fontSize: 14,
-      //height: 21,
-      color: AppColors.textColor);
+  static final headline3 = GoogleFonts.notoSans(
+      textStyle: const TextStyle(
+          fontSize: 32,
+          //height: 48,
+          color: AppColors.textColor));
+  static final headline4 = GoogleFonts.notoSans(
+      textStyle: const TextStyle(
+          fontSize: 26,
+          //height: 39,
+          color: AppColors.textColor));
+  static final headline5 = GoogleFonts.notoSans(
+      textStyle: const TextStyle(
+          fontSize: 22,
+          //height: 33,
+          color: AppColors.textColor));
+  static final headline6 = GoogleFonts.notoSans(
+      textStyle: const TextStyle(
+          fontSize: 18,
+          //height: 27,
+          color: AppColors.textColor));
   static final paragraph = GoogleFonts.notoSans(
       textStyle: const TextStyle(
           fontSize: 32,

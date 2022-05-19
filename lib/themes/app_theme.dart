@@ -53,7 +53,7 @@ class AppTheme {
             OutlinedButtonThemeData(style: outlinedButtonStyle),
         textButtonTheme: TextButtonThemeData(style: textButtonStyle),
         inputDecorationTheme: inputDecorationTheme,
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
             backgroundColor: AppColors.secondaryColor,
             iconTheme: iconThemeData,
             elevation: 0,
