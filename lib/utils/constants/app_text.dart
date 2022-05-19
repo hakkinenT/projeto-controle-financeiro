@@ -1,6 +1,6 @@
 class AppText {
   static const textInitialPage =
-      'CONHEÇA E CONTROLE SEUS GASTOS E GUARDE DINHEIRO TODOS OS MESES';
+      'Controle seus gastos e guarde dinheiro todos os meses';
   static const textRegisterPage =
       'CADASTRE-SE E COMECE A ORGANIZAR SUAS FINANÇAS';
   static const textLoginPage =
