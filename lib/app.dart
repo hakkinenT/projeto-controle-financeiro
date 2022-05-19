@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_controle_financeiro/models/models.dart';
+import 'package:projeto_controle_financeiro/router/app_router.dart';
 
 import 'package:projeto_controle_financeiro/themes/app_theme.dart';
 import 'package:projeto_controle_financeiro/widgets/buttons/button_google.dart';
@@ -15,7 +16,9 @@ import 'modules/login/authentication/auth_service.dart';
 import 'themes/app_colors.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  App({Key? key}) : super(key: key);
+
+  final AppRouter? router = AppRouter();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class App extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      home: const RegisterTest(),
+      onGenerateRoute: router!.generateRoute,
     );
   }
 }
