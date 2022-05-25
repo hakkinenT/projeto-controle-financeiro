@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projeto_controle_financeiro/themes/app_colors.dart';
-import 'package:projeto_controle_financeiro/widgets/expanded_tile/expanded_item.dart';
+
+import '../../themes/themes.dart';
+import '../widgets.dart';
 
 class CustomExpandedTile extends StatefulWidget {
   final String title;

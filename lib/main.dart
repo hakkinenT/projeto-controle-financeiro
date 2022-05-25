@@ -1,13 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_controle_financeiro/app.dart';
+import 'package:projeto_controle_financeiro/di/setup_locator.dart';
+import 'package:projeto_controle_financeiro/repositories/authentication_repository.dart';
 
-void main() async {
-  _init();
-  runApp(App());
-}
-
-void _init() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await setupLocator();
+
+  final authenticationRepository = getIt<AuthenticationRepository>();
+  await authenticationRepository.user.first;
+  runApp(App(
+    authenticationRepository: authenticationRepository,
+  ));
 }

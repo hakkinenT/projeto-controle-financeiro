@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_controle_financeiro/themes/app_colors.dart';
-import 'package:projeto_controle_financeiro/themes/app_typograph.dart';
 
-class ButtonGoogle extends StatelessWidget {
+import '../../themes/themes.dart';
+
+class GoogleButton extends StatelessWidget {
   final double width;
   final double height;
   final Function()? onTap;
-  const ButtonGoogle(
+  const GoogleButton(
       {Key? key,
       required this.width,
       required this.height,

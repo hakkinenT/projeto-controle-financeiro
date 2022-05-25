@@ -1,7 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:projeto_controle_financeiro/themes/app_typograph.dart';
+
+import '../../themes/themes.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String labelText;
@@ -20,6 +21,8 @@ class CustomTextFormField extends StatelessWidget {
   final Function()? onTap;
   final String? Function(String?)? validator;
   final Widget? prefixIcon;
+  final String? helperText;
+  final String? errorText;
   TextAlign textAlign;
   bool autofocus;
   bool readOnly;
@@ -44,6 +47,8 @@ class CustomTextFormField extends StatelessWidget {
       this.onTap,
       this.validator,
       this.prefixIcon,
+      this.helperText,
+      this.errorText,
       this.textAlign = TextAlign.start,
       this.autofocus = false,
       this.readOnly = false,
@@ -63,7 +68,9 @@ class CustomTextFormField extends StatelessWidget {
             labelText,
             style: AppTypograph.labelText,
           ),
-          prefixIcon: prefixIcon),
+          prefixIcon: prefixIcon,
+          helperText: helperText,
+          errorText: errorText),
       controller: controller,
       focusNode: focusNode,
       keyboardType: keyboardType,

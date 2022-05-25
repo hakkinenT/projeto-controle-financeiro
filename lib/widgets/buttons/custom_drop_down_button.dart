@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:projeto_controle_financeiro/themes/app_colors.dart';
-import 'package:projeto_controle_financeiro/themes/app_typograph.dart';
+
+import '../../themes/themes.dart';
 
 class CustomDropDownButton extends StatelessWidget {
   final String hintText;
