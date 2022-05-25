@@ -1,10 +1,10 @@
 class AppText {
   static const textInitialPage =
-      'Controle seus gastos e guarde dinheiro todos os meses';
+      'Conheça seus gastos e tenha o controle da sua vida financeira';
   static const textRegisterPage =
-      'CADASTRE-SE E COMECE A ORGANIZAR SUAS FINANÇAS';
+      'Cadastre-se e comece a organizar suas finanças';
   static const textLoginPage =
-      'BEM-VINDO(A) DE VOLTA. FAÇA LOGIN E CONTINUE A ORGANIZAR SUAS FINANÇAS';
+      'Bem-Vindo(a) de volta. Faça login e continue a organizar suas finanças.';
   static const titleEmailVerificationPage = 'VERIFIQUE O SEU E-MAIL';
   static const subtitleEmailVerificationPage =
       'Enviamos um link de verificação para o seu e-mail';

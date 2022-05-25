@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AppImage {
-  static final logo = SvgPicture.asset(
-    'assets/logo.svg',
-    semanticsLabel: 'Riquinho logo',
+  static final logo = Image.asset(
+    'assets/logo.png',
+    semanticLabel: 'Riquinho logo',
   );
   static final mailSent = SvgPicture.asset(
     'assets/mail_sent.svg',

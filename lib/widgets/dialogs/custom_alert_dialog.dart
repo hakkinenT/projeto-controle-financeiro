@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_controle_financeiro/themes/app_typograph.dart';
+
+import '../../themes/themes.dart';
 
 AlertDialog customAlertDialog(
     {required BuildContext context,

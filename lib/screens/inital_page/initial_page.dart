@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_controle_financeiro/themes/app_typograph.dart';
-import 'package:projeto_controle_financeiro/utils/constants/app_text.dart';
-import 'package:projeto_controle_financeiro/utils/constants/routes_names.dart';
-import 'package:projeto_controle_financeiro/widgets/buttons/custom_elevated_button.dart';
-import 'package:projeto_controle_financeiro/widgets/buttons/custom_outlined_button.dart';
+
+import '../../themes/themes.dart';
+import '../../utils/utils.dart';
+import '../../widgets/widgets.dart';
 
 class InitialPage extends StatelessWidget {
   const InitialPage({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class InitialPage extends StatelessWidget {
               height: 130,
               child: AspectRatio(
                 aspectRatio: 16 / 9,
-                child: Image.asset('assets/logo.png'),
+                child: AppImage.logo,
               ),
             ),
             Text(
@@ -45,7 +44,7 @@ class InitialPage extends StatelessWidget {
             CustomOutlinedButton(
                 buttonLabel: 'Log in',
                 onPressed: () {
-                  Navigator.pushNamed(context, loginPath);
+                  Navigator.pushNamed(context, verifyEmailPath);
                 },
                 width: double.maxFinite,
                 height: 52)

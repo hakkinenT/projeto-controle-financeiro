@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_controle_financeiro/screens/inital_page/initial_page.dart';
-import 'package:projeto_controle_financeiro/utils/constants/routes_names.dart';
+
+import '../screens/screens.dart';
+import '../utils/utils.dart';
 
 class AppRouter {
   Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -8,13 +9,13 @@ class AppRouter {
       case initialPath:
         return MaterialPageRoute(builder: (_) => const InitialPage());
       case loginPath:
-        break;
+        return MaterialPageRoute(builder: (_) => const LoginPage());
       case registerPath:
-        break;
+        return MaterialPageRoute(builder: (_) => const RegisterUserPage());
       case verifyEmailPath:
-        break;
+        return MaterialPageRoute(builder: (_) => const VerifyEmailPage());
       case homePath:
-        break;
+        return MaterialPageRoute(builder: (_) => const HomePage());
       case registerIncomePath:
         break;
       case detailIncomePath:

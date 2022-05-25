@@ -11,7 +11,7 @@ class AppTypograph {
   static final headline4 = GoogleFonts.notoSans(
       textStyle: const TextStyle(
           fontSize: 26,
-          //height: 39,
+          //height: 20,
           color: AppColors.textColor));
   static final headline5 = GoogleFonts.notoSans(
       textStyle: const TextStyle(
