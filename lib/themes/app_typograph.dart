@@ -25,13 +25,13 @@ class AppTypograph {
           color: AppColors.textColor));
   static final paragraph = GoogleFonts.notoSans(
       textStyle: const TextStyle(
-          fontSize: 32,
+          fontSize: 16,
           //height: 28.8,
           letterSpacing: 0.5,
           color: AppColors.textColor));
   static final paragraphBold = GoogleFonts.notoSans(
       textStyle: const TextStyle(
-          fontSize: 32,
+          fontSize: 16,
           //height: 28.8,
           letterSpacing: 0.5,
           color: AppColors.textColor,

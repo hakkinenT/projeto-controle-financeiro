@@ -20,15 +20,13 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   void initState() {
-    BlocProvider.of<RegisterUserCubit>(context, listen: false).emailSent();
-
+    context.read<RegisterUserCubit>().emailSent();
     timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       final isEmailVerified =
-          await BlocProvider.of<RegisterUserCubit>(context, listen: false)
-              .emailVerified();
+          await context.read<RegisterUserCubit>().emailVerified();
       if (isEmailVerified) {
         timer.cancel();
-        Navigator.pushNamed(context, homePath);
+        Navigator.pushReplacementNamed(context, homePath);
       }
     });
     super.initState();
@@ -76,10 +74,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             CustomRichText(
                 text: 'Não recebeu o e-mail? ',
                 clickableText: 'Reenviar e-mail',
-                onTap: () {
-                  BlocProvider.of<RegisterUserCubit>(context, listen: false)
-                      .emailSent();
-                })
+                onTap: () => context.read<RegisterUserCubit>().emailSent())
           ],
         ),
       ),

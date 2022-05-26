@@ -35,12 +35,12 @@ class RegisterUserForm extends StatelessWidget {
     return BlocListener<RegisterUserCubit, RegisterUserState>(
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
-          Navigator.pushNamed(context, verifyEmailPath);
+          Navigator.pushReplacementNamed(context, verifyEmailPath);
         } else if (state.status.isSubmissionFailure) {
           customAlertDialog(
               context: context,
               title: 'Erro',
-              message:
+              message: state.errorMessage ??
                   'Houve um erro ao tentar cadastrar o usuário. Tente novamente mais tarde',
               informationIcon: Icons.error,
               informationColor: AppColors.informationErrorColor);

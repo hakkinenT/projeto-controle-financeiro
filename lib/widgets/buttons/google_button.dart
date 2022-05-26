@@ -30,7 +30,7 @@ class GoogleButton extends StatelessWidget {
             width: 12,
           ),
           Text(
-            'Continue com o Google',
+            'Entrar com o Google',
             style: AppTypograph.buttonText,
           )
         ]),
