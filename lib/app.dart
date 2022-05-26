@@ -7,6 +7,7 @@ import 'package:projeto_controle_financeiro/router/app_router.dart';
 
 import 'package:projeto_controle_financeiro/themes/app_theme.dart';
 
+import 'cubit/login/login.dart';
 import 'cubit/register_user/register_user.dart';
 
 class App extends StatelessWidget {
@@ -26,7 +27,10 @@ class App extends StatelessWidget {
               AppBloc(authenticationRepository: _authenticationRepository),
         ),
         BlocProvider(
-            create: (_) => RegisterUserCubit(_authenticationRepository))
+            create: (_) => RegisterUserCubit(_authenticationRepository)),
+        BlocProvider(
+          create: (context) => LoginCubit(_authenticationRepository),
+        )
       ],
       child: AppView(),
     );
