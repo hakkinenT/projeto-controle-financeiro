@@ -1,30 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'monthly_expenses.dart';
+part of 'expenses.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MonthlyExpenses _$MonthlyExpensesFromJson(Map<String, dynamic> json) =>
-    MonthlyExpenses(
+Expenses _$ExpensesFromJson(Map<String, dynamic> json) => Expenses(
       id: json['id'] as String?,
       description: json['description'] as String,
-      total: (json['total'] as num).toDouble(),
+      value: (json['value'] as num).toDouble(),
       category: $enumDecode(_$CategoryEnumMap, json['category']),
+      type: $enumDecode(_$TypeEnumMap, json['type']),
       person: Person.fromJson(json['person'] as Map<String, dynamic>),
+      expirationDate: DateTime.parse(json['expiration_date'] as String),
     );
 
-Map<String, dynamic> _$MonthlyExpensesToJson(MonthlyExpenses instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ExpensesToJson(Expenses instance) => <String, dynamic>{
       'id': instance.id,
       'description': instance.description,
-      'total': instance.total,
+      'value': instance.value,
       'category': _$CategoryEnumMap[instance.category],
+      'type': _$TypeEnumMap[instance.type],
       'person': instance.person,
+      'expiration_date': instance.expirationDate.toIso8601String(),
     };
 
 const _$CategoryEnumMap = {
-  Category.fixed: 'fixed',
-  Category.variable: 'variable',
+  Category.essential: 'essential',
+  Category.nonEssential: 'nonEssential',
+};
+
+const _$TypeEnumMap = {
+  Type.fixed: 'fixed',
+  Type.variable: 'variable',
 };

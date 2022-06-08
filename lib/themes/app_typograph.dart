@@ -56,6 +56,11 @@ class AppTypograph {
           letterSpacing: 1.25,
           fontWeight: FontWeight.w600,
           color: AppColors.textColor));
+  static final textButton = GoogleFonts.notoSans(
+      textStyle: const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+  ));
   static final caption = GoogleFonts.notoSans(
       textStyle: const TextStyle(fontSize: 12, color: AppColors.textColor));
   static final captionBold = GoogleFonts.notoSans(
@@ -63,4 +68,7 @@ class AppTypograph {
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: AppColors.textColor));
+  static final overline = GoogleFonts.notoSans(
+      textStyle: const TextStyle(
+          fontSize: 10, letterSpacing: 1.25, fontWeight: FontWeight.w500));
 }

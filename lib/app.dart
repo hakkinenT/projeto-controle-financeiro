@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_controle_financeiro/bloc/app_bloc.dart';
-
-import 'package:projeto_controle_financeiro/repositories/authentication_repository.dart';
 import 'package:projeto_controle_financeiro/router/app_router.dart';
-
-import 'package:projeto_controle_financeiro/themes/app_theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'cubit/login/login.dart';
 import 'cubit/register_user/register_user.dart';
+import 'repositories/repositories.dart';
+import 'themes/themes.dart';
 
 class App extends StatelessWidget {
   const App(
@@ -49,6 +48,15 @@ class AppView extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       onGenerateRoute: router!.generateRoute,
+      locale: const Locale('pt_BR'),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
     );
   }
 }

@@ -7,7 +7,8 @@ class AppRouter {
   Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case initialPath:
-        return MaterialPageRoute(builder: (_) => const InitialPage());
+        //return MaterialPageRoute(builder: (_) => const InitialPage());
+        return MaterialPageRoute(builder: (_) => const HomePage());
       case loginPath:
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case registerPath:

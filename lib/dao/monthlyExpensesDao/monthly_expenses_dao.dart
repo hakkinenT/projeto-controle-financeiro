@@ -3,7 +3,7 @@ import 'package:projeto_controle_financeiro/utils/enum_map.dart';
 
 import '../../models/models.dart';
 
-class MonthlyExpensesDAO {
+/*class MonthlyExpensesDAO {
   final _db = FirebaseFirestore.instance;
   final _mExpensesDao =
       FirebaseFirestore.instance.collection('monthly_expenses');
@@ -33,3 +33,4 @@ class MonthlyExpensesDAO {
     await _mExpensesDao.doc(mExpensesId).delete();
   }
 }
+*/

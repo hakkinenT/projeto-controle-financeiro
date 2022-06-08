@@ -11,10 +11,8 @@ class IncomeDAO {
       {required Income income, required String personId}) async {
     var incomeToJson = {
       "description": income.description,
-      "total": income.total,
-      "expiration_date": income.expirationDate.toIso8601String(),
+      "total": income.value,
       "type": typeEnumMap[income.type],
-      "category": categoryEnumMap[income.category],
       "refPerson": _db.doc('person/$personId')
     };
     await _incomeDAO.doc().set(incomeToJson);

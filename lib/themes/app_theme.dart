@@ -21,7 +21,7 @@ final outlinedButtonStyle = OutlinedButton.styleFrom(
     ));
 
 final textButtonStyle = TextButton.styleFrom(
-    primary: AppColors.primaryDarkColor, textStyle: AppTypograph.buttonText);
+    primary: AppColors.primaryDarkColor, textStyle: AppTypograph.textButton);
 
 final inputDecorationTheme = InputDecorationTheme(
     contentPadding: const EdgeInsets.all(16),
@@ -53,6 +53,25 @@ class AppTheme {
             OutlinedButtonThemeData(style: outlinedButtonStyle),
         textButtonTheme: TextButtonThemeData(style: textButtonStyle),
         inputDecorationTheme: inputDecorationTheme,
+        chipTheme: ChipThemeData(
+          labelStyle: AppTypograph.paragraph,
+          selectedColor: AppColors.primaryColor,
+          disabledColor: AppColors.grayColor,
+          padding: const EdgeInsets.all(8),
+          elevation: 2,
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: AppColors.textColor,
+          selectedLabelStyle: AppTypograph.smallText,
+          unselectedItemColor: AppColors.grayColor,
+          unselectedLabelStyle:
+              AppTypograph.smallText.copyWith(color: AppColors.grayColor),
+          backgroundColor: AppColors.secondaryColor,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: AppColors.primaryColor,
+            extendedTextStyle: AppTypograph.buttonText,
+            foregroundColor: AppColors.textColor),
         appBarTheme: AppBarTheme(
             backgroundColor: AppColors.secondaryColor,
             iconTheme: iconThemeData,
