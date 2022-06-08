@@ -1,1 +1,1 @@
-enum Category { fixed, variable }
+enum Category { essential, nonEssential }

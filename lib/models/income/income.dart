@@ -8,20 +8,15 @@ part 'income.g.dart';
 class Income extends Equatable {
   final String? id;
   final String description;
-  final double total;
-  @JsonKey(name: 'expiration_date')
-  final DateTime expirationDate;
+  final double value;
   final Type type;
-  final Category category;
   final Person person;
 
   const Income(
       {this.id,
       required this.description,
-      required this.total,
-      required this.expirationDate,
+      required this.value,
       required this.type,
-      required this.category,
       required this.person});
 
   factory Income.fromJson(Map<String, dynamic> json) => _$IncomeFromJson(json);
@@ -31,21 +26,17 @@ class Income extends Equatable {
   Income copyWith(
       {String? id,
       String? description,
-      double? total,
-      DateTime? expirationDate,
+      double? value,
       Type? type,
-      Category? category,
       Person? person}) {
     return Income(
         id: id ?? this.id,
         description: description ?? this.description,
-        total: total ?? this.total,
-        expirationDate: expirationDate ?? this.expirationDate,
+        value: value ?? this.value,
         type: type ?? this.type,
-        category: category ?? this.category,
         person: person ?? this.person);
   }
 
   @override
-  List<Object?> get props => [id, description, total, expirationDate];
+  List<Object?> get props => [id, description, type];
 }

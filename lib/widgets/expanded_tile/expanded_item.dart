@@ -4,7 +4,7 @@ import 'package:projeto_controle_financeiro/themes/app_typograph.dart';
 
 class ExpandedItem extends StatelessWidget {
   final String description;
-  final double value;
+  final String value;
   const ExpandedItem({Key? key, required this.description, required this.value})
       : super(key: key);
 
@@ -21,7 +21,7 @@ class ExpandedItem extends StatelessWidget {
                 .copyWith(color: AppColors.grayDarkColor),
           ),
           const Spacer(),
-          Text('R\$ ${value.toStringAsFixed(2)}',
+          Text(value,
               style: AppTypograph.smallText
                   .copyWith(color: AppColors.grayDarkColor))
         ],

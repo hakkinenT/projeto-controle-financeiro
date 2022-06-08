@@ -1,8 +1,8 @@
 import '../models/models.dart';
 
-const typeEnumMap = {
-  Type.essential: 'Essencial',
-  Type.nonEssential: 'Não Essencial'
-};
+const typeEnumMap = {Type.fixed: 'Fixa', Type.variable: 'Variável'};
 
-const categoryEnumMap = {Category.fixed: 'Fixa', Category.variable: 'Variável'};
+const categoryEnumMap = {
+  Category.essential: 'Essencial',
+  Category.nonEssential: 'Não Essencial'
+};

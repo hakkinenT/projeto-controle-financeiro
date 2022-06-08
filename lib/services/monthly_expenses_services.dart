@@ -2,7 +2,7 @@ import '../dao/dao.dart';
 import '../models/models.dart';
 import '../repositories/repositories.dart';
 
-class MonthlyExpensesServices
+/*class MonthlyExpensesServices
     implements DataRepositoryWithGetAllOperation<MonthlyExpenses> {
   final MonthlyExpensesDAO _mExpensesDAO = MonthlyExpensesDAO();
 
@@ -26,4 +26,4 @@ class MonthlyExpensesServices
   Future<void> update(MonthlyExpenses entity) async {
     await _mExpensesDAO.updateMonthlyExpenses(mExpenses: entity);
   }
-}
+}*/

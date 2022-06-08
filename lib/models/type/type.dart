@@ -1,1 +1,1 @@
-enum Type { essential, nonEssential }
+enum Type { fixed, variable }
