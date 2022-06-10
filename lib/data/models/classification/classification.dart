@@ -1,0 +1,1 @@
+enum Classification { essential, nonEssential }

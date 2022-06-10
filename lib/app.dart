@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:projeto_controle_financeiro/bloc/app_bloc.dart';
+
 import 'package:projeto_controle_financeiro/router/app_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'cubit/login/login.dart';
-import 'cubit/register_user/register_user.dart';
-import 'repositories/repositories.dart';
+import 'business_logic/business_logic.dart';
+
+import 'data/repositories/repositories.dart';
 import 'themes/themes.dart';
 
 class App extends StatelessWidget {

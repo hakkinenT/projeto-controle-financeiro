@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 
-import '../screens/screens.dart';
+import '../presentation/screens/screens.dart';
 import '../utils/utils.dart';
 
 class AppRouter {
   Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case initialPath:
-        //return MaterialPageRoute(builder: (_) => const InitialPage());
-        return MaterialPageRoute(builder: (_) => const HomePage());
-      case loginPath:
+      case kInitialPath:
+        return MaterialPageRoute(builder: (_) => const InitialPage());
+      //return MaterialPageRoute(builder: (_) => const HomePage());
+      case kLoginPath:
         return MaterialPageRoute(builder: (_) => const LoginPage());
-      case registerPath:
+      case kRegisterPath:
         return MaterialPageRoute(builder: (_) => const RegisterUserPage());
-      case verifyEmailPath:
+      case kVerifyEmailPath:
         return MaterialPageRoute(builder: (_) => const VerifyEmailPage());
-      case homePath:
+      case kHomePath:
         return MaterialPageRoute(builder: (_) => const HomePage());
-      case registerIncomePath:
+      case kRegisterIncomePath:
         break;
-      case detailIncomePath:
+      case kDetailIncomePath:
         break;
-      case registerExpensesPath:
+      case kRegisterExpensesPath:
         break;
-      case detailExpensesPath:
+      case kDetailExpensesPath:
         break;
       default:
         return null;

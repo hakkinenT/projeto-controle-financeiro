@@ -1,8 +1,8 @@
-import '../models/models.dart';
+import '../data/models/models.dart';
 
-const typeEnumMap = {Type.fixed: 'Fixa', Type.variable: 'Variável'};
+const typeEnumMap = {Type.fixed: 'Fixa', Type.nonFixed: 'Não Fixa'};
 
-const categoryEnumMap = {
-  Category.essential: 'Essencial',
-  Category.nonEssential: 'Não Essencial'
+const classificationEnumMap = {
+  Classification.essential: 'Essencial',
+  Classification.nonEssential: 'Não Essencial'
 };
