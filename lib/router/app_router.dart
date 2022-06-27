@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_controle_financeiro/presentation/screens/income_page/income_page.dart';
 
 import '../presentation/screens/screens.dart';
 import '../utils/utils.dart';
@@ -8,7 +9,7 @@ class AppRouter {
     switch (settings.name) {
       case kInitialPath:
         return MaterialPageRoute(builder: (_) => const InitialPage());
-      //return MaterialPageRoute(builder: (_) => const HomePage());
+
       case kLoginPath:
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case kRegisterPath:
@@ -18,7 +19,11 @@ class AppRouter {
       case kHomePath:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case kRegisterIncomePath:
-        break;
+        return MaterialPageRoute(
+            builder: (_) => const IncomePage(
+                  income: null,
+                  isDetailsPage: false,
+                ));
       case kDetailIncomePath:
         break;
       case kRegisterExpensesPath:

@@ -60,6 +60,7 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: obscureText,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       initialValue: initialValue,
       autofocus: autofocus,
       decoration: InputDecoration(

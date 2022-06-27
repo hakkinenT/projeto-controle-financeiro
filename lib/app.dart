@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_controle_financeiro/dependency_injection/dependency_injection.dart';
 
 import 'package:projeto_controle_financeiro/router/app_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -29,7 +30,10 @@ class App extends StatelessWidget {
             create: (_) => RegisterUserCubit(_authenticationRepository)),
         BlocProvider(
           create: (context) => LoginCubit(_authenticationRepository),
-        )
+        ),
+        BlocProvider(
+            create: (_) =>
+                IncomeCubit(incomeRepository: getIt<IIncomeRepository>()))
       ],
       child: AppView(),
     );

@@ -9,6 +9,7 @@ class CustomDropDownButton extends StatelessWidget {
   final String? initialValue;
   final FocusNode? focusNode;
   final Function(String?)? onChanged;
+  final String? Function(String?)? validator;
   final List<String> items;
   final double width;
   final double height;
@@ -22,6 +23,7 @@ class CustomDropDownButton extends StatelessWidget {
       this.focusNode,
       required this.items,
       required this.onChanged,
+      this.validator,
       required this.width,
       required this.height,
       this.prefixIcon,
@@ -35,6 +37,8 @@ class CustomDropDownButton extends StatelessWidget {
       height: height,
       child: DropdownButtonHideUnderline(
         child: DropdownButtonFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: validator,
           decoration: InputDecoration(
             prefixIcon: prefixIcon,
           ),

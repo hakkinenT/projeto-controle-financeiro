@@ -6,7 +6,9 @@ import '../../../data/models/models.dart';
 
 class IncomesTile extends StatefulWidget {
   final Income income;
-  const IncomesTile({Key? key, required this.income}) : super(key: key);
+  final Function() onPressed;
+  const IncomesTile({Key? key, required this.income, required this.onPressed})
+      : super(key: key);
 
   @override
   State<IncomesTile> createState() => _IncomesTileState();
@@ -38,6 +40,6 @@ class _IncomesTileState extends State<IncomesTile> {
         prefixIcon: Icons.trending_up,
         title: widget.income.description,
         expandedItems: _items,
-        onButtonPressed: () {});
+        onButtonPressed: widget.onPressed);
   }
 }
