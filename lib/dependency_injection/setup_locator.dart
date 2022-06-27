@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../business_logic/business_logic.dart';
 import '../data/cache/cache.dart';
 import '../data/repositories/repositories.dart';
 
@@ -12,6 +11,7 @@ Future<void> setupLocator() async {
   await _initSharedPref();
   _initCache();
   _initAuthenticationRepository();
+  _initIncomeRepository();
   //_initRegisterUserCubit();
   //_initLoginCubit();
 }
@@ -27,6 +27,10 @@ void _initCache() {
 
 void _initAuthenticationRepository() {
   getIt.registerSingleton<AuthenticationRepository>(AuthenticationRepository());
+}
+
+void _initIncomeRepository() {
+  getIt.registerSingleton<IIncomeRepository>(IncomeRepository());
 }
 
 /*void _initRegisterUserCubit() {

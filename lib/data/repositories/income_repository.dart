@@ -27,8 +27,8 @@ class IncomeRepository implements IIncomeRepository {
   }
 
   @override
-  Stream<List<Income>> getAllIncomes() {
-    return _incomeApi.readIncomes();
+  Future<List<Income>> getAllIncomes() async {
+    return await _incomeApi.readIncomes();
   }
 
   @override

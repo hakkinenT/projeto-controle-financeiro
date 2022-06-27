@@ -19,4 +19,3 @@ export 'lists_view/income_list_view.dart';
 export 'expandable_fab/action_button.dart';
 export 'expandable_fab/expandable_fab.dart';
 export 'scroll_to_hide_widget/scroll_to_hide_widget.dart';
-export 'show_selected_page/show_selected_page.dart';

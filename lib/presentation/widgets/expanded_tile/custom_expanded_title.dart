@@ -9,7 +9,7 @@ class CustomExpandedTile extends StatefulWidget {
   final List<ExpandedItem> expandedItems;
   final Widget? subtitle;
   final IconData? prefixIcon;
-  final Function()? onButtonPressed;
+  final Function() onButtonPressed;
 
   const CustomExpandedTile(
       {Key? key,
