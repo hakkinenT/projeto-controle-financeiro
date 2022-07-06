@@ -33,7 +33,10 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
             create: (_) =>
-                IncomeCubit(incomeRepository: getIt<IIncomeRepository>()))
+                IncomeCubit(incomeRepository: getIt<IIncomeRepository>())),
+        BlocProvider(
+            create: (_) =>
+                ExpenseCubit(expenseRepository: getIt<IExpenseRepository>())),
       ],
       child: AppView(),
     );

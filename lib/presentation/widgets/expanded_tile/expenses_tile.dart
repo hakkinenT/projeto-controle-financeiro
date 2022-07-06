@@ -6,7 +6,9 @@ import '../../../utils/utils.dart';
 
 class ExpensesTile extends StatefulWidget {
   final Expense expense;
-  const ExpensesTile({Key? key, required this.expense}) : super(key: key);
+  final Function() onPressed;
+  const ExpensesTile({Key? key, required this.expense, required this.onPressed})
+      : super(key: key);
 
   @override
   State<ExpensesTile> createState() => _ExpensesTileState();
@@ -40,6 +42,6 @@ class _ExpensesTileState extends State<ExpensesTile> {
         prefixIcon: Icons.trending_down,
         title: widget.expense.description,
         expandedItems: items,
-        onButtonPressed: () {});
+        onButtonPressed: widget.onPressed);
   }
 }

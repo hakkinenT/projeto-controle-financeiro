@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AppBloc bloc) => bloc.state.user);
     return Scaffold(
         body: SafeArea(
           child: Padding(
@@ -56,15 +55,7 @@ class _HomePageState extends State<HomePage> {
                   income: 2000,
                   expenses: 1000,
                 ),
-                InformationPage(expenses: <Expense>[
-                  Expense(
-                      description: 'Conta de água',
-                      value: 100,
-                      classification: Classification.essential,
-                      type: Type.fixed,
-                      user: user,
-                      expirationDate: DateTime.now())
-                ])
+                const InformationPage()
               ],
             ),
           ),
@@ -74,7 +65,9 @@ class _HomePageState extends State<HomePage> {
           ActionButton(
             heroTag: 'fBtnExpense',
             icon: const Icon(Icons.trending_down),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, kRegisterExpensesPath);
+            },
           ),
           ActionButton(
             heroTag: 'fBtnIncome',
@@ -96,22 +89,27 @@ class _HomePageState extends State<HomePage> {
 }
 
 class InformationPage extends StatelessWidget {
-  final List<Expense> expenses;
-  const InformationPage({Key? key, required this.expenses}) : super(key: key);
+  const InformationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: BlocProvider.of<IncomeCubit>(context)..getAllIncomes(),
-      child: ShowSelectedPage(expenses: expenses),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: BlocProvider.of<IncomeCubit>(context)..getAllIncomes(),
+        ),
+        BlocProvider.value(
+            value: BlocProvider.of<ExpenseCubit>(context)..getAllExpenses()),
+      ],
+      child: const ShowSelectedPage(),
     );
   }
 }
 
 class ShowSelectedPage extends StatefulWidget {
-  final List<Expense> expenses;
-
-  const ShowSelectedPage({Key? key, required this.expenses}) : super(key: key);
+  const ShowSelectedPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ShowSelectedPage> createState() => _ShowSelectedPageState();
@@ -215,10 +213,9 @@ class _ShowSelectedPageState extends State<ShowSelectedPage> {
                 }
               });
             },
-            children: [
-              //IncomeListView(incomes: widget.incomes),
-              const _PageIncome(),
-              ExpensesListView(expenses: widget.expenses),
+            children: const [
+              _PageIncome(),
+              _PageExpense(),
             ],
           ),
         )
@@ -253,6 +250,36 @@ class _PageIncome extends StatelessWidget {
     } else {
       return const Center(
         child: Text('Houve um erro ao tentar carregar as Rendas'),
+      );
+    }
+  }
+}
+
+class _PageExpense extends StatelessWidget {
+  const _PageExpense({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<ExpenseCubit>().state;
+    if (state is ExpenseInitial) {
+      return const SizedBox();
+    } else if (state is ExpenseLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (state is ExpenseLoaded) {
+      if (state.expenses.isEmpty) {
+        return const Center(
+          child: Text('Não há despesas cadastradas'),
+        );
+      } else {
+        return ExpensesListView(
+          expenses: state.expenses,
+        );
+      }
+    } else {
+      return const Center(
+        child: Text('Houve um erro ao tentar carregar as Despesas'),
       );
     }
   }

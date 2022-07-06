@@ -18,8 +18,6 @@ class IncomeAPI {
   }
 
   Future<List<Income>> readIncomes() async {
-    /*return _db.collection(_incomeCollection).snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Income.fromJson(doc.data())).toList());*/
     dynamic data;
     var incomeList = <Income>[];
     QuerySnapshot incomes = await _db.collection(_incomeCollection).get();
