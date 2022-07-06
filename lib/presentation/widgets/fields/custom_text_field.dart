@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../themes/themes.dart';
 
@@ -23,6 +24,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final String? helperText;
   final String? errorText;
+  final List<TextInputFormatter>? inputFormatters;
   TextAlign textAlign;
   bool autofocus;
   bool readOnly;
@@ -49,6 +51,7 @@ class CustomTextFormField extends StatelessWidget {
       this.prefixIcon,
       this.helperText,
       this.errorText,
+      this.inputFormatters,
       this.textAlign = TextAlign.start,
       this.autofocus = false,
       this.readOnly = false,
@@ -59,6 +62,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: inputFormatters,
       obscureText: obscureText,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       initialValue: initialValue,

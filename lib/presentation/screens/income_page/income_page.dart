@@ -68,6 +68,13 @@ class _IncomeFormState extends State<IncomeForm> {
   }
 
   @override
+  void dispose() {
+    _descriptionController.dispose();
+    _valueController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

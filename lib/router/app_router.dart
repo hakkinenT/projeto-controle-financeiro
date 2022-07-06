@@ -24,12 +24,13 @@ class AppRouter {
                   income: null,
                   isDetailsPage: false,
                 ));
-      case kDetailIncomePath:
-        break;
+
       case kRegisterExpensesPath:
-        break;
-      case kDetailExpensesPath:
-        break;
+        return MaterialPageRoute(
+            builder: (_) => const ExpensePage(
+                  expense: null,
+                ));
+
       default:
         return null;
     }

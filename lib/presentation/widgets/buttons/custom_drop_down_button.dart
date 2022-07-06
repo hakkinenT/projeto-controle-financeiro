@@ -56,7 +56,9 @@ class CustomDropDownButton extends StatelessWidget {
           onChanged: enabled ? onChanged : null,
           disabledHint: enabled
               ? null
-              : Text(initialValue!, style: AppTypograph.smallText),
+              : Text(initialValue!,
+                  style: AppTypograph.smallText
+                      .copyWith(color: AppColors.textColor)),
           value: initialValue,
           icon: const Icon(
             Icons.expand_more,

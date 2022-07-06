@@ -12,6 +12,7 @@ Future<void> setupLocator() async {
   _initCache();
   _initAuthenticationRepository();
   _initIncomeRepository();
+  _initExpenseRepository();
   //_initRegisterUserCubit();
   //_initLoginCubit();
 }
@@ -33,6 +34,9 @@ void _initIncomeRepository() {
   getIt.registerSingleton<IIncomeRepository>(IncomeRepository());
 }
 
+void _initExpenseRepository() {
+  getIt.registerSingleton<IExpenseRepository>(ExpenseRepository());
+}
 /*void _initRegisterUserCubit() {
   getIt.registerSingleton<RegisterUserCubit>(
       RegisterUserCubit(getIt<AuthenticationRepository>()));

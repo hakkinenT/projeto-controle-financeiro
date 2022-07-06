@@ -26,8 +26,8 @@ class ExpenseRepository implements IExpenseRepository {
   }
 
   @override
-  Stream<List<Expense>> getAllExpense() {
-    return _expenseApi.readExpense();
+  Future<List<Expense>> getAllExpense() async {
+    return await _expenseApi.readExpense();
   }
 
   @override

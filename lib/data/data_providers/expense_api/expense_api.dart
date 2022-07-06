@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto_controle_financeiro/utils/enum_map.dart';
+import 'package:projeto_controle_financeiro/utils/string_to_enum.dart';
 
 import '../../models/models.dart';
 
@@ -12,24 +13,46 @@ class ExpenseAPI {
     var expenseToJson = {
       "description": expense.description,
       "value": expense.value,
-      "category": classificationEnumMap[expense.classification],
+      "classification": classificationEnumMap[expense.classification],
       "type": typeEnumMap[expense.type],
-      "expiration_date": expense.expirationDate,
+      "expirationDate": expense.expirationDate,
       "refUser": _db.doc('user/$userId')
     };
     await _db.collection(_expenseCollection).doc().set(expenseToJson);
   }
 
-  Stream<List<Expense>> readExpense() {
-    return _db.collection(_expenseCollection).snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Expense.fromJson(doc.data())).toList());
+  Future<List<Expense>> readExpense() async {
+    dynamic data;
+    var expenseList = <Expense>[];
+    QuerySnapshot expenses = await _db.collection(_expenseCollection).get();
+    for (var i = 0; i < expenses.size; i++) {
+      data = expenses.docs[i].data();
+      var expense = Expense(
+          id: expenses.docs[i].id,
+          description: data['description'],
+          value: double.parse(data['value'].toString()),
+          classification: stringToClassification[data['classification']]!,
+          type: stringToType[data['type']]!,
+          expirationDate: data['expirationDate'].toDate(),
+          user: User(id: data['refUser'].id));
+
+      expenseList.add(expense);
+    }
+    return expenseList;
   }
 
   Future updateExpense({required Expense expense}) async {
+    var expenseToJson = {
+      "description": expense.description,
+      "value": expense.value,
+      "category": classificationEnumMap[expense.classification],
+      "type": typeEnumMap[expense.type],
+      "expirationDate": expense.expirationDate,
+    };
     await _db
         .collection(_expenseCollection)
         .doc(expense.id)
-        .update(expense.toJson());
+        .update(expenseToJson);
   }
 
   Future deleteExpense({required String expenseId}) async {

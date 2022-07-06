@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:projeto_controle_financeiro/data/cache/cache.dart';
 import 'package:projeto_controle_financeiro/dependency_injection/dependency_injection.dart';
 
 import '../../../data/models/models.dart';
