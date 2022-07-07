@@ -48,7 +48,7 @@ class IncomeCubit extends Cubit<IncomeState> {
     emit(IncomeLoading());
     try {
       await _incomeRepository.deleteIncome(incomeId: incomeId);
-      getAllIncomes();
+      emit(IncomeSuccess());
     } on Exception {
       emit(const IncomeFailure(
           message: 'Houve um erro ao tentar excluir a Renda'));

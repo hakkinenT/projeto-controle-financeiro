@@ -8,7 +8,11 @@ part 'income_validation_state.dart';
 class IncomeValidationCubit extends Cubit<IncomeValidationState> {
   IncomeValidationCubit() : super(const IncomeValidating());
 
-  void validateIncomeForm(String description, String value, String? type) {
+  void validateIncomeForm(Map<String, String?> formData) {
+    String description = formData['description']!;
+    String value = formData['value']!;
+    String? type = formData['type'];
+
     final descriptionInput = DescriptionInput(description: description);
     final valueInput = ValueInput(value: value);
     final typeInput = TypeInput(type: type);

@@ -30,10 +30,10 @@ class ExpenseAPI {
       var expense = Expense(
           id: expenses.docs[i].id,
           description: data['description'],
-          value: double.parse(data['value'].toString()),
+          value: double.parse(data['value'].toString()) / 100,
           classification: stringToClassification[data['classification']]!,
           type: stringToType[data['type']]!,
-          expirationDate: data['expirationDate'].toDate(),
+          expirationDate: data['expirationDate']?.toDate(),
           user: User(id: data['refUser'].id));
 
       expenseList.add(expense);

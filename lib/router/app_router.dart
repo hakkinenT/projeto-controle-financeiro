@@ -22,7 +22,6 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => const IncomePage(
                   income: null,
-                  isDetailsPage: false,
                 ));
 
       case kRegisterExpensesPath:

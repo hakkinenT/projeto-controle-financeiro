@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto_controle_financeiro/business_logic/cubit/form/form_interaction_cubit.dart';
 
 import '../../../data/models/models.dart';
 import '../../../themes/themes.dart';
@@ -141,7 +140,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                     onChanged: (value) {
                       final newValue = value
                           .replaceAll('R\$', '')
-                          .replaceAll(',', "")
+                          .replaceAll(RegExp('[^0-9]'), "")
                           .trim();
                       _formData['value'] = newValue;
                       context
@@ -226,6 +225,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
       _formData['description'] = '';
       _formData['value'] = '';
       _expirationDateController.text = '';
+      _formData['expiration-date'] = '';
       BlocProvider.of<FormInteractionCubit>(context, listen: false)
           .formRegister();
     } else {
@@ -564,7 +564,7 @@ class _ExpenseFormButton extends StatelessWidget {
                     final expense = Expense(
                         id: expenseId,
                         description: formData['description']!,
-                        value: double.parse(formData['value']!) / 100,
+                        value: double.parse(formData['value']!),
                         classification:
                             stringToClassification[formData['classification']]!,
                         type: stringToType[formData['type']]!,

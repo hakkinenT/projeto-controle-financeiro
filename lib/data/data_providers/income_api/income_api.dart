@@ -27,7 +27,7 @@ class IncomeAPI {
           id: incomes.docs[i].id,
           description: data['description'],
           type: stringToType[data['type']]!,
-          value: double.parse(data['value'].toString()),
+          value: double.parse(data['value'].toString()) / 100,
           user: User(id: data['refUser'].id));
       incomeList.add(income);
     }
