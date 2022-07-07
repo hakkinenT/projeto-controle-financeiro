@@ -24,7 +24,6 @@ class IncomeListView extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => IncomePage(
                             income: incomes[index],
-                            isDetailsPage: true,
                           )));
             },
           );
