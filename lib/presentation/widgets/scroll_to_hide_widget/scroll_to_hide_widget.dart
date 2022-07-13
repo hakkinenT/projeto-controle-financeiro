@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_controle_financeiro/business_logic/business_logic.dart';
 
 class ScrollToHideWidget extends StatefulWidget {
   final Widget child;
@@ -18,8 +20,6 @@ class ScrollToHideWidget extends StatefulWidget {
 }
 
 class _ScrollToHideWidgetState extends State<ScrollToHideWidget> {
-  bool isVisible = true;
-
   @override
   void initState() {
     super.initState();
@@ -35,26 +35,21 @@ class _ScrollToHideWidgetState extends State<ScrollToHideWidget> {
   void listen() {
     final direction = widget.controller.position.userScrollDirection;
     if (direction == ScrollDirection.forward) {
-      show();
+      context.read<AppInteractionCubit>().showWidgetOnScroll();
     } else if (direction == ScrollDirection.reverse) {
-      hide();
+      context.read<AppInteractionCubit>().hideWidgetOnScroll();
     }
-  }
-
-  void show() {
-    if (!isVisible) setState(() => isVisible = true);
-  }
-
-  void hide() {
-    if (isVisible) setState(() => isVisible = false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: widget.duration,
-      height: isVisible ? kBottomNavigationBarHeight : 0,
-      child: Wrap(children: [widget.child]),
-    );
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+        builder: (context, state) {
+      return AnimatedContainer(
+        duration: widget.duration,
+        height: state.isPageScroll ? kBottomNavigationBarHeight : 0,
+        child: Wrap(children: [widget.child]),
+      );
+    });
   }
 }

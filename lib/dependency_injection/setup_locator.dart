@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:projeto_controle_financeiro/business_logic/business_logic.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,7 @@ Future<void> setupLocator() async {
   _initAuthenticationRepository();
   _initIncomeRepository();
   _initExpenseRepository();
+
   //_initRegisterUserCubit();
   //_initLoginCubit();
 }
@@ -46,3 +48,5 @@ void _initLoginCubit() {
   getIt.registerSingleton<LoginCubit>(
       LoginCubit(getIt<AuthenticationRepository>()));
 }*/
+
+

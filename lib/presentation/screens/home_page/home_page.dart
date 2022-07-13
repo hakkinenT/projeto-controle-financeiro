@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_controle_financeiro/dependency_injection/dependency_injection.dart';
 
 import '../../../business_logic/business_logic.dart';
-import '../../../data/models/models.dart';
 
 import '../../widgets/widgets.dart';
 import '../../../utils/utils.dart';
@@ -116,10 +116,7 @@ class ShowSelectedPage extends StatefulWidget {
 }
 
 class _ShowSelectedPageState extends State<ShowSelectedPage> {
-  bool _isIncomeSelected = true;
-  bool _isExpensesSelected = false;
   final PageController pageController = PageController(initialPage: 0);
-  int pageChanged = 0;
 
   @override
   void dispose() {
@@ -129,97 +126,115 @@ class _ShowSelectedPageState extends State<ShowSelectedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+      builder: (context, state) {
+        return Column(
           children: [
-            FilterChip(
-                label: const Text(
-                  'Rendas',
-                ),
-                selected: _isIncomeSelected,
-                showCheckmark: false,
-                avatar: const Icon(
-                  Icons.trending_up,
-                  size: 25,
-                ),
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                labelPadding:
-                    const EdgeInsets.symmetric(vertical: 3.0, horizontal: 4.0),
-                onSelected: (bool selected) {
-                  setState(() {
-                    _isIncomeSelected = selected;
-
-                    if (_isIncomeSelected) {
-                      _isExpensesSelected = false;
-                      pageController.animateToPage(--pageChanged,
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.bounceInOut);
-                    } else if (_isIncomeSelected == false &&
-                        _isExpensesSelected == false) {
-                      _isIncomeSelected = true;
-                    }
-                  });
-                }),
-            FilterChip(
-                label: const Text(
-                  'Despesas',
-                ),
-                selected: _isExpensesSelected,
-                showCheckmark: false,
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                avatar: const Icon(
-                  Icons.trending_down,
-                  size: 25,
-                ),
-                labelPadding:
-                    const EdgeInsets.symmetric(vertical: 3.0, horizontal: 4.0),
-                onSelected: (bool selected) {
-                  setState(() {
-                    _isExpensesSelected = selected;
-
-                    if (_isExpensesSelected) {
-                      _isIncomeSelected = false;
-                      pageController.animateToPage(++pageChanged,
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.bounceInOut);
-                    } else if (_isExpensesSelected == false &&
-                        _isIncomeSelected == false) {
-                      _isExpensesSelected = true;
-                    }
-                  });
-                })
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _IncomeFilterChip(pageController: pageController),
+                _ExpenseFilterChip(pageController: pageController)
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            _InformationPageView(pageController: pageController)
           ],
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        SizedBox(
-          height: 270,
-          child: PageView(
-            pageSnapping: true,
-            controller: pageController,
-            onPageChanged: (index) {
-              setState(() {
-                pageChanged = index;
-                if (pageChanged == 0) {
-                  _isIncomeSelected = true;
-                  _isExpensesSelected = false;
-                } else {
-                  _isExpensesSelected = true;
-                  _isIncomeSelected = false;
-                }
-              });
-            },
-            children: const [
-              _PageIncome(),
-              _PageExpense(),
-            ],
+        );
+      },
+    );
+  }
+}
+
+class _InformationPageView extends StatelessWidget {
+  final PageController pageController;
+  const _InformationPageView({Key? key, required this.pageController})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300,
+      child: PageView.builder(
+        pageSnapping: true,
+        controller: pageController,
+        onPageChanged: (index) =>
+            context.read<AppInteractionCubit>().pageFilterChipChanged(index),
+        itemCount: 2,
+        itemBuilder: (context, pagePosition) {
+          return _pages(pagePosition);
+        },
+      ),
+    );
+  }
+
+  Widget _pages(int index) {
+    final listPages = [
+      const _PageIncome(),
+      const _PageExpense(),
+    ];
+    return listPages[index];
+  }
+}
+
+class _IncomeFilterChip extends StatelessWidget {
+  final PageController pageController;
+  const _IncomeFilterChip({Key? key, required this.pageController})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final appInteractionCubit = context.read<AppInteractionCubit>();
+
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+        builder: (context, state) {
+      return CustomFilterChip(
+          label: 'Rendas',
+          selected: state.isIncomeFilterSelected,
+          avatar: const Icon(
+            Icons.trending_up,
+            size: 25,
           ),
-        )
-      ],
+          onSelected: (bool selected) {
+            appInteractionCubit.incomeFilterChipSelected(selected);
+            int pageIndex = appInteractionCubit.pageIndex;
+            pageController.animateToPage(pageIndex,
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.bounceInOut);
+          });
+    });
+  }
+}
+
+class _ExpenseFilterChip extends StatelessWidget {
+  final PageController pageController;
+  const _ExpenseFilterChip({Key? key, required this.pageController})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final appInteractionCubit = context.read<AppInteractionCubit>();
+
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+      builder: (context, state) {
+        return CustomFilterChip(
+            label: 'Despesas',
+            selected: state.isExpenseFilterSelected,
+            avatar: const Icon(
+              Icons.trending_down,
+              size: 25,
+            ),
+            onSelected: (bool selected) {
+              appInteractionCubit.expenseFilterChipSelected(selected);
+              int pageIndex = appInteractionCubit.pageIndex;
+              pageController.animateToPage(pageIndex,
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.bounceInOut);
+            });
+      },
     );
   }
 }

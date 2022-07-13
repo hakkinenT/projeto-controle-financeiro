@@ -6,3 +6,4 @@ export 'cubit/income/income_validation_cubit.dart';
 export 'cubit/expense/expense_cubit.dart';
 export 'cubit/expense/expense_validation_cubit.dart';
 export 'cubit/form/form_interaction_cubit.dart';
+export 'cubit/app_interaction_cubit.dart';

@@ -1,80 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../business_logic/business_logic.dart';
 import '../../../utils/utils.dart';
 import '../../../themes/themes.dart';
 import '../../widgets/widgets.dart';
 import '../../../data/models/models.dart';
 
-class InfoPanel extends StatefulWidget {
+class InfoPanel extends StatelessWidget {
   final double income;
   final double expenses;
-
-  const InfoPanel({
-    Key? key,
-    required this.income,
-    required this.expenses,
-  }) : super(key: key);
-
-  @override
-  State<InfoPanel> createState() => _InfoPanelState();
-}
-
-class _InfoPanelState extends State<InfoPanel> {
-  bool panelVisible = false;
-  bool isCategory = true;
+  const InfoPanel({Key? key, required this.income, required this.expenses})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: panelVisible ? 280 : 187,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+      builder: (context, state) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: state.showInformationPanel ? 280 : 187,
+          child: Column(
             children: [
-              SizedBox(
-                  height: 85,
-                  width: 100,
-                  child: CustomPieChart(sectors: _buildSectors(isCategory))),
-              _Informations(income: widget.income, expenses: widget.expenses),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                      height: 85,
+                      width: 100,
+                      child: CustomPieChart(
+                          sectors: _buildSectors(state.isTypeButton))),
+                  _Informations(income: income, expenses: expenses),
+                ],
+              ),
+              if (state.showInformationPanel)
+                const SizedBox(
+                  height: 32,
+                ),
+              Visibility(
+                child: PanelLegends(legends: _buildLegends(state.isTypeButton)),
+                visible: state.showInformationPanel,
+              ),
+              const _ChangeChartButton(),
+              const AnimatedExpandIconButton()
             ],
           ),
-          if (panelVisible)
-            const SizedBox(
-              height: 32,
-            ),
-          Visibility(
-            child: PanelLegends(legends: _buildLegends(isCategory)),
-            visible: panelVisible,
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: TextButton(
-                style: TextButton.styleFrom(
-                    padding: const EdgeInsets.only(right: 18)),
-                onPressed: () {
-                  setState(() {
-                    isCategory = !isCategory;
-                  });
-                },
-                child: isCategory
-                    ? const Text('Ver Tipo')
-                    : const Text('Ver Classificação')),
-          ),
-          IconButton(
-              constraints: const BoxConstraints(),
-              padding: EdgeInsets.zero,
-              onPressed: () {
-                setState(() {
-                  panelVisible = !panelVisible;
-                });
-              },
-              icon: panelVisible
-                  ? const Icon(Icons.expand_less)
-                  : const Icon(Icons.expand_more))
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -155,6 +127,32 @@ class _Informations extends StatelessWidget {
           style: AppTypograph.smallText.copyWith(color: Colors.black54),
         ),
       ],
+    );
+  }
+}
+
+class _ChangeChartButton extends StatelessWidget {
+  const _ChangeChartButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+      builder: (context, state) {
+        final isCategory = state.isTypeButton;
+
+        return Align(
+          alignment: Alignment.bottomRight,
+          child: TextButton(
+              style: TextButton.styleFrom(
+                  padding: const EdgeInsets.only(right: 18)),
+              onPressed: () {
+                context.read<AppInteractionCubit>().typeButtonPressed();
+              },
+              child: state.isTypeButton
+                  ? const Text('Ver Classificação')
+                  : const Text('Ver Tipo')),
+        );
+      },
     );
   }
 }
