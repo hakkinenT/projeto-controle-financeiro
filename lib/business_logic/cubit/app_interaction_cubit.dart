@@ -75,4 +75,12 @@ class AppInteractionCubit extends Cubit<AppInteractionState> {
       emit(state.copyWith(isPageScroll: false));
     }
   }
+
+  void toggleFabMenu() {
+    emit(state.copyWith(isFabMenuOpen: !state.isFabMenuOpen));
+  }
+
+  void pageClosed() {
+    emit(state.copyWith(isPageClosed: !state.isPageClosed));
+  }
 }

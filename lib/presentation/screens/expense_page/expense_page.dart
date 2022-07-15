@@ -74,7 +74,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
         title: Text(_appBarTitle),
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.read<AppInteractionCubit>().pageClosed();
+              Navigator.of(context).pop();
             },
             icon: const Icon(Icons.close)),
         actions: _isEditPage
