@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:projeto_controle_financeiro/dependency_injection/dependency_injection.dart';
 
 import '../../../business_logic/business_logic.dart';
-
 import '../../widgets/widgets.dart';
-import '../../../utils/utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,14 +18,25 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     scrollController = ScrollController();
+    scrollController.addListener(listen);
     super.initState();
   }
 
   @override
   void dispose() {
+    scrollController.removeListener(listen);
     scrollController.dispose();
 
     super.dispose();
+  }
+
+  void listen() {
+    final direction = scrollController.position.userScrollDirection;
+    if (direction == ScrollDirection.forward) {
+      context.read<AppInteractionCubit>().showWidgetOnScroll();
+    } else if (direction == ScrollDirection.reverse) {
+      context.read<AppInteractionCubit>().hideWidgetOnScroll();
+    }
   }
 
   @override
@@ -60,31 +69,49 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        floatingActionButton:
-            ExpandableFab(scrollController: scrollController, children: [
-          ActionButton(
-            heroTag: 'fBtnExpense',
-            icon: const Icon(Icons.trending_down),
-            onPressed: () {
-              Navigator.pushNamed(context, kRegisterExpensesPath);
-            },
-          ),
-          ActionButton(
-            heroTag: 'fBtnIncome',
-            icon: const Icon(Icons.trending_up),
-            onPressed: () {
-              Navigator.pushNamed(context, kRegisterIncomePath);
-            },
-          ),
-        ]),
-        bottomNavigationBar: ScrollToHideWidget(
-          controller: scrollController,
-          child: BottomNavigationBar(currentIndex: 0, items: const [
+        floatingActionButton: const _HideFabButton(),
+        bottomNavigationBar: const _HideBottonNavigatorBar());
+  }
+}
+
+class _HideFabButton extends StatelessWidget {
+  const _HideFabButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+        builder: (context, state) {
+      if (state.isPageScroll) {
+        return const FabMenuButton();
+      } else {
+        return const SizedBox();
+      }
+    });
+  }
+}
+
+class _HideBottonNavigatorBar extends StatelessWidget {
+  final Duration duration;
+  const _HideBottonNavigatorBar(
+      {Key? key, this.duration = const Duration(milliseconds: 200)})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+        builder: (context, state) {
+      return AnimatedContainer(
+        duration: duration,
+        height: state.isPageScroll ? kBottomNavigationBarHeight : 0,
+        child: Wrap(children: [
+          BottomNavigationBar(currentIndex: 0, items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.history), label: 'Histórico')
-          ]),
-        ));
+          ])
+        ]),
+      );
+    });
   }
 }
 

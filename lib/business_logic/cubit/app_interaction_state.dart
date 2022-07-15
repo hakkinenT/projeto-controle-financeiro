@@ -7,7 +7,9 @@ class AppInteractionState extends Equatable {
       this.isIncomeFilterSelected = true,
       this.isExpenseFilterSelected = false,
       this.pageFilterChanged = 0,
-      this.isPageScroll = true});
+      this.isPageScroll = true,
+      this.isFabMenuOpen = false,
+      this.isPageClosed = false});
 
   final bool showInformationPanel;
   final bool isTypeButton;
@@ -15,6 +17,8 @@ class AppInteractionState extends Equatable {
   final bool isExpenseFilterSelected;
   final int pageFilterChanged;
   final bool isPageScroll;
+  final bool isFabMenuOpen;
+  final bool isPageClosed;
 
   AppInteractionState copyWith(
       {bool? showInformationPanel,
@@ -22,7 +26,9 @@ class AppInteractionState extends Equatable {
       bool? isIncomeFilterSelected,
       bool? isExpenseFilterSelected,
       int? pageFilterChanged,
-      bool? isPageScroll}) {
+      bool? isPageScroll,
+      bool? isFabMenuOpen,
+      bool? isPageClosed}) {
     return AppInteractionState(
         showInformationPanel: showInformationPanel ?? this.showInformationPanel,
         isTypeButton: isTypeButton ?? this.isTypeButton,
@@ -31,7 +37,9 @@ class AppInteractionState extends Equatable {
         isExpenseFilterSelected:
             isExpenseFilterSelected ?? this.isExpenseFilterSelected,
         pageFilterChanged: pageFilterChanged ?? this.pageFilterChanged,
-        isPageScroll: isPageScroll ?? this.isPageScroll);
+        isPageScroll: isPageScroll ?? this.isPageScroll,
+        isFabMenuOpen: isFabMenuOpen ?? this.isFabMenuOpen,
+        isPageClosed: isPageClosed ?? this.isPageClosed);
   }
 
   @override
@@ -41,6 +49,8 @@ class AppInteractionState extends Equatable {
         isExpenseFilterSelected,
         isIncomeFilterSelected,
         pageFilterChanged,
-        isPageScroll
+        isPageScroll,
+        isFabMenuOpen,
+        isPageClosed
       ];
 }
