@@ -65,6 +65,7 @@ class _FabMenuButtonState extends State<FabMenuButton>
             heroTag: 'btnExpense',
             child: const Icon(Icons.trending_down),
             onPressed: () {
+              toggleMenu(context);
               Navigator.pushNamed(context, kRegisterExpensesPath);
             },
           ),
@@ -72,6 +73,7 @@ class _FabMenuButtonState extends State<FabMenuButton>
             backgroundColor: AppColors.primaryLightColor,
             heroTag: 'btnIncome',
             onPressed: () {
+              toggleMenu(context);
               Navigator.pushNamed(context, kRegisterIncomePath);
             },
             child: const Icon(Icons.trending_up),

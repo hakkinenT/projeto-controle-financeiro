@@ -88,6 +88,7 @@ class _IncomeFormState extends State<IncomeForm> {
             _showSnackBar(context);
             Navigator.pop(context);
             context.read<IncomeCubit>().getAllIncomes();
+            context.read<InformationPanelCubit>().informationPanelCalculated();
           } else if (state is IncomeLoaded) {
             Navigator.pop(context);
           } else if (state is IncomeFailure) {
@@ -224,9 +225,7 @@ class _IncomeFormState extends State<IncomeForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
-                      CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                      ),
+                      CircularProgressIndicator(),
                       Text('Cadastrando...')
                     ],
                   ),
@@ -246,9 +245,7 @@ class _IncomeFormState extends State<IncomeForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
-                      CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                      ),
+                      CircularProgressIndicator(),
                       Text('Editando...')
                     ],
                   ),
@@ -268,9 +265,7 @@ class _IncomeFormState extends State<IncomeForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
-                      CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                      ),
+                      CircularProgressIndicator(),
                       Text('Excluindo...')
                     ],
                   ),

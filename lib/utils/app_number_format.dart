@@ -7,7 +7,9 @@ class AppNumberFormat {
   }
 
   static String getPercentage(double value) {
-    NumberFormat formatter = NumberFormat.percentPattern('pt_BR');
-    return formatter.format(value);
+    NumberFormat formatter =
+        NumberFormat.decimalPercentPattern(locale: 'pt_BR', decimalDigits: 2);
+    final formatedNumber = formatter.format(value);
+    return formatedNumber;
   }
 }

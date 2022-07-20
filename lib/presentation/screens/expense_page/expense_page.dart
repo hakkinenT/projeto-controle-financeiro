@@ -104,6 +104,9 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
               Navigator.pop(context);
               context.read<ExpenseCubit>().getAllExpenses();
+              context
+                  .read<InformationPanelCubit>()
+                  .informationPanelCalculated();
             } else if (state is ExpenseLoaded) {
               Navigator.pop(context);
             } else if (state is ExpenseFailure) {
@@ -299,9 +302,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
-                      CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                      ),
+                      CircularProgressIndicator(),
                       Text('Cadastrando...')
                     ],
                   ),
@@ -321,9 +322,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
-                      CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                      ),
+                      CircularProgressIndicator(),
                       Text('Editando...')
                     ],
                   ),
@@ -343,9 +342,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
-                      CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                      ),
+                      CircularProgressIndicator(),
                       Text('Excluindo...')
                     ],
                   ),

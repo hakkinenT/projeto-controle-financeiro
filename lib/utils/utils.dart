@@ -5,3 +5,4 @@ export 'app_number_format.dart';
 export 'constants/regex.dart';
 export 'string_to_enum.dart';
 export 'currency_text_formatter.dart';
+export 'app_calc.dart';

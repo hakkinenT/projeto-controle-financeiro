@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_controle_financeiro/themes/themes.dart';
 
 import '../../../business_logic/business_logic.dart';
 import '../../widgets/widgets.dart';
@@ -50,21 +51,27 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Align(
                   alignment: Alignment.topRight,
-                  child: IconButton(
-                      onPressed: () {
-                        context.read<AppBloc>().add(AppLogoutRequested());
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.account_circle)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const _ChartOptionButton(),
+                      IconButton(
+                          onPressed: () {
+                            context.read<AppBloc>().add(AppLogoutRequested());
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.account_circle)),
+                    ],
+                  ),
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 20,
                 ),
-                const InfoPanel(
-                  income: 2000,
-                  expenses: 1000,
+                const FinancialInformationPanel(),
+                const SizedBox(
+                  height: 20,
                 ),
-                const InformationPage()
+                const DetailedFinancialInformationPages()
               ],
             ),
           ),
@@ -115,8 +122,55 @@ class _HideBottonNavigatorBar extends StatelessWidget {
   }
 }
 
-class InformationPage extends StatelessWidget {
-  const InformationPage({Key? key}) : super(key: key);
+class _ChartOptionButton extends StatelessWidget {
+  const _ChartOptionButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    SimpleDialog dialog = SimpleDialog(
+      title: const Text('Mudar visualização do Gráfico'),
+      children: [
+        ListTile(
+            leading: const Icon(
+              Icons.data_usage,
+              color: AppColors.chartEssentialColor,
+            ),
+            title: const Text('Mostrar Tipo de Despesa'),
+            onTap: () {
+              context.read<AppInteractionCubit>().typeButtonPressed();
+              Navigator.pop(context);
+            }),
+        ListTile(
+            leading: const Icon(
+              Icons.data_usage,
+              color: AppColors.chartFixedColor,
+            ),
+            title: const Text('Mostrar Classificação da Despesa'),
+            onTap: () {
+              context.read<AppInteractionCubit>().typeButtonPressed();
+              Navigator.pop(context);
+            })
+      ],
+    );
+    return BlocBuilder<AppInteractionCubit, AppInteractionState>(
+      builder: (context, state) {
+        return IconButton(
+            onPressed: () {
+              showDialog<void>(context: context, builder: (context) => dialog);
+            },
+            icon: Icon(
+              Icons.data_usage,
+              color: state.isTypeButton
+                  ? AppColors.chartEssentialColor
+                  : AppColors.chartFixedColor,
+            ));
+      },
+    );
+  }
+}
+
+class DetailedFinancialInformationPages extends StatelessWidget {
+  const DetailedFinancialInformationPages({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -276,13 +330,19 @@ class _PageIncome extends StatelessWidget {
     if (state is IncomeInitial) {
       return const SizedBox();
     } else if (state is IncomeLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Container(
+        margin: const EdgeInsets.only(top: 70),
+        child: const Align(
+            alignment: Alignment.topCenter, child: CircularProgressIndicator()),
       );
     } else if (state is IncomeLoaded) {
       if (state.incomes.isEmpty) {
-        return const Center(
-          child: Text('Não há rendas cadastradas'),
+        return Container(
+          margin: const EdgeInsets.only(top: 70),
+          child: const Align(
+            alignment: Alignment.topCenter,
+            child: Text('Não há rendas cadastradas'),
+          ),
         );
       } else {
         return IncomeListView(
@@ -290,8 +350,12 @@ class _PageIncome extends StatelessWidget {
         );
       }
     } else {
-      return const Center(
-        child: Text('Houve um erro ao tentar carregar as Rendas'),
+      return Container(
+        margin: const EdgeInsets.only(top: 70),
+        child: const Align(
+          alignment: Alignment.topCenter,
+          child: Text('Houve um erro ao tentar carregar as Rendas'),
+        ),
       );
     }
   }
@@ -306,13 +370,21 @@ class _PageExpense extends StatelessWidget {
     if (state is ExpenseInitial) {
       return const SizedBox();
     } else if (state is ExpenseLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Container(
+        margin: const EdgeInsets.only(top: 70),
+        child: const Align(
+          alignment: Alignment.topCenter,
+          child: CircularProgressIndicator(),
+        ),
       );
     } else if (state is ExpenseLoaded) {
       if (state.expenses.isEmpty) {
-        return const Center(
-          child: Text('Não há despesas cadastradas'),
+        return Container(
+          margin: const EdgeInsets.only(top: 70),
+          child: const Align(
+            alignment: Alignment.topCenter,
+            child: Text('Não há despesas cadastradas'),
+          ),
         );
       } else {
         return ExpensesListView(
@@ -320,8 +392,12 @@ class _PageExpense extends StatelessWidget {
         );
       }
     } else {
-      return const Center(
-        child: Text('Houve um erro ao tentar carregar as Despesas'),
+      return Container(
+        margin: const EdgeInsets.only(top: 70),
+        child: const Align(
+          alignment: Alignment.topCenter,
+          child: Text('Houve um erro ao tentar carregar as Despesas'),
+        ),
       );
     }
   }

@@ -13,10 +13,11 @@ export 'chart/custom_pie_chart.dart';
 export 'chart/chart_legend.dart';
 export 'chart/painel_legends.dart';
 export 'indicator/indicator.dart';
-export 'info_panel/info_panel.dart';
+
 export 'lists_view/expenses_list_view.dart';
 export 'lists_view/income_list_view.dart';
 export 'animated_expanded_icon_button/animated_expanded_icon_button.dart';
 export 'chips/custom_filter_chip.dart';
 export 'expandable_fab/fab_menu_button.dart';
 export 'expandable_fab/fab_vertical_delegate.dart';
+export 'info_panel/financial_information_panel.dart';

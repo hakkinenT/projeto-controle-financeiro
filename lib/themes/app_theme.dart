@@ -60,6 +60,9 @@ class AppTheme {
           padding: const EdgeInsets.all(8),
           elevation: 2,
         ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: AppColors.primaryColor,
+        ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: AppColors.textColor,
           selectedLabelStyle: AppTypograph.smallText,

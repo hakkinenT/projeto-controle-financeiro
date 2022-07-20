@@ -10,22 +10,40 @@ class CustomPieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.0,
-      child: Container(
-          color: AppColors.secondaryColor,
-          child: PieChart(PieChartData(
-              sectionsSpace: 0,
-              sections: showingSections(sectors),
-              centerSpaceRadius: 35.0))),
-    );
+    if (sectors.isNotEmpty) {
+      return AspectRatio(
+        aspectRatio: 1.0,
+        child: Container(
+            color: AppColors.secondaryColor,
+            child: PieChart(PieChartData(
+                sectionsSpace: 0,
+                sections: showingSections(sectors),
+                centerSpaceRadius: 45.0))),
+      );
+    } else {
+      return AspectRatio(
+        aspectRatio: 1.0,
+        child: Container(
+            color: AppColors.secondaryColor,
+            child: PieChart(PieChartData(
+                sectionsSpace: 0,
+                sections: <PieChartSectionData>[
+                  PieChartSectionData(
+                      color: AppColors.grayColor,
+                      value: 100,
+                      radius: 30,
+                      title: '')
+                ],
+                centerSpaceRadius: 45.0))),
+      );
+    }
   }
 
   List<PieChartSectionData> showingSections(List<ChartSector> sectors) {
     final List<PieChartSectionData> list = [];
 
     for (var sector in sectors) {
-      const double radius = 25;
+      const double radius = 30;
       final data = PieChartSectionData(
           color: sector.color, value: sector.value, radius: radius, title: '');
       list.add(data);
