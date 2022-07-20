@@ -16,7 +16,6 @@ export 'indicator/indicator.dart';
 
 export 'lists_view/expenses_list_view.dart';
 export 'lists_view/income_list_view.dart';
-export 'animated_expanded_icon_button/animated_expanded_icon_button.dart';
 export 'chips/custom_filter_chip.dart';
 export 'expandable_fab/fab_menu_button.dart';
 export 'expandable_fab/fab_vertical_delegate.dart';
