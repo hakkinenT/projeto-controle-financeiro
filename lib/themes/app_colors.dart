@@ -12,9 +12,10 @@ class AppColors {
   static const chartEssentialColor = Color(0xFFBF38FF);
   static const chartNonEssentialColor = Color(0xFFD375FF);
   static const chartFixedColor = Color(0xFFEC811E);
-  static const chartVariableColor = Color(0xFFECA665);
+  static const chartNonFixedColor = Color(0xFFECA665);
   static const informationSuccessColor = Color(0xFF4554E0);
   static const informationWarningColor = Color(0xFFE0E000);
   static const informationErrorColor = Color(0xFFA60C15);
   static const fieldBackgroundColor = Color.fromRGBO(31, 170, 0, 0.1);
+  static const currentIncomeColor = Color.fromARGB(255, 54, 112, 204);
 }

@@ -38,6 +38,9 @@ class App extends StatelessWidget {
             create: (_) =>
                 ExpenseCubit(expenseRepository: getIt<IExpenseRepository>())),
         BlocProvider(create: (_) => AppInteractionCubit()),
+        BlocProvider(
+          create: (context) => InformationPanelCubit(),
+        )
       ],
       child: AppView(),
     );
