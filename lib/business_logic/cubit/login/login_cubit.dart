@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
-import '../../../data/form_models/form_models.dart';
+import '../../../data/models/form_models/form_models.dart';
 import '../../../data/repositories/repositories.dart';
 import '../../../app_exceptions/app_exceptions.dart';
 

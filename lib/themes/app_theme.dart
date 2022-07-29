@@ -32,6 +32,9 @@ final inputDecorationTheme = InputDecorationTheme(
     border: const OutlineInputBorder(
         borderSide: BorderSide.none, borderRadius: borderRadiusAll),
     alignLabelWithHint: true,
+    focusedErrorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.informationErrorColor),
+        borderRadius: borderRadiusAll),
     focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.primaryColor),
         borderRadius: borderRadiusAll),

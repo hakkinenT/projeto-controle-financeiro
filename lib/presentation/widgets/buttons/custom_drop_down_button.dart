@@ -12,36 +12,38 @@ class CustomDropDownButton extends StatelessWidget {
   final String? Function(String?)? validator;
   final List<String> items;
   final double width;
-  final double height;
+  final String? errorText;
   final Widget? prefixIcon;
+  final Function()? onTap;
   bool enabled;
 
   CustomDropDownButton(
       {Key? key,
       required this.hintText,
       this.initialValue,
+      this.onTap,
       this.focusNode,
       required this.items,
       required this.onChanged,
       this.validator,
       required this.width,
-      required this.height,
+      this.errorText,
       this.prefixIcon,
       this.enabled = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: width,
-      height: height,
+      constraints: const BoxConstraints(minHeight: 52, maxHeight: 80),
       child: DropdownButtonHideUnderline(
         child: DropdownButtonFormField(
+          onTap: onTap,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
-          decoration: InputDecoration(
-            prefixIcon: prefixIcon,
-          ),
+          decoration:
+              InputDecoration(prefixIcon: prefixIcon, errorText: errorText),
           items: items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
                 value: value,

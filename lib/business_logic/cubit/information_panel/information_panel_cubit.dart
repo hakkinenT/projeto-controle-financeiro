@@ -1,13 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:projeto_controle_financeiro/data/form_models/classification/classification_input.dart';
-import 'package:projeto_controle_financeiro/data/models/classification/classification.dart';
-import 'package:projeto_controle_financeiro/data/models/expense/expense.dart';
-import 'package:projeto_controle_financeiro/data/models/income/income.dart';
-import 'package:projeto_controle_financeiro/data/models/models.dart';
-import 'package:projeto_controle_financeiro/data/repositories/repositories.dart';
 import 'package:projeto_controle_financeiro/utils/app_calc.dart';
 
+import '../../../data/models/models.dart';
+import '../../../data/repositories/repositories.dart';
 import '../../../dependency_injection/setup_locator.dart';
 
 part 'information_panel_state.dart';

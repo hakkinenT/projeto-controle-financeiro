@@ -34,7 +34,7 @@ class CustomPieChart extends StatelessWidget {
                       radius: 30,
                       title: '')
                 ],
-                centerSpaceRadius: 45.0))),
+                centerSpaceRadius: 35.0))),
       );
     }
   }
@@ -43,7 +43,7 @@ class CustomPieChart extends StatelessWidget {
     final List<PieChartSectionData> list = [];
 
     for (var sector in sectors) {
-      const double radius = 30;
+      const double radius = 25;
       final data = PieChartSectionData(
           color: sector.color, value: sector.value, radius: radius, title: '');
       list.add(data);

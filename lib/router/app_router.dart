@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_controle_financeiro/presentation/screens/income_page/income_page.dart';
 
 import '../presentation/screens/screens.dart';
 import '../utils/utils.dart';
@@ -20,12 +19,14 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const HomePage());
       case kRegisterIncomePath:
         return MaterialPageRoute(
+            fullscreenDialog: true,
             builder: (_) => const IncomePage(
                   income: null,
                 ));
 
       case kRegisterExpensesPath:
         return MaterialPageRoute(
+            fullscreenDialog: true,
             builder: (_) => const ExpensePage(
                   expense: null,
                 ));

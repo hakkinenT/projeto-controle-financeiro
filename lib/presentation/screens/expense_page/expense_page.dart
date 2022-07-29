@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:projeto_controle_financeiro/form_validator/form_validator.dart';
 
 import '../../../data/models/models.dart';
 import '../../../themes/themes.dart';
@@ -21,7 +22,7 @@ class ExpensePage extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider.value(value: BlocProvider.of<ExpenseCubit>(context)),
-          BlocProvider(create: (context) => ExpenseValidationCubit()),
+          BlocProvider(create: (context) => ExpenseFormCubit()),
           BlocProvider(create: (context) => FormInteractionCubit())
         ],
         child: ExpenseForm(
@@ -43,13 +44,6 @@ class ExpenseForm extends StatefulWidget {
 }
 
 class _ExpenseFormState extends State<ExpenseForm> {
-  final Map<String, String?> _formData = {};
-  final _expirationDateController = TextEditingController();
-  final _descriptionFocusNode = FocusNode();
-  final _valueFocusNode = FocusNode();
-  final _typeFocusNode = FocusNode();
-  final _classificationFocusNode = FocusNode();
-  final _expirationDateFocusNode = FocusNode();
   bool _isEditPage = false;
 
   String _appBarTitle = 'Despesa';
@@ -62,22 +56,10 @@ class _ExpenseFormState extends State<ExpenseForm> {
   }
 
   @override
-  void dispose() {
-    _expirationDateController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_appBarTitle),
-        leading: IconButton(
-            onPressed: () {
-              context.read<AppInteractionCubit>().pageClosed();
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.close)),
         actions: _isEditPage
             ? [
                 IconButton(
@@ -124,97 +106,28 @@ class _ExpenseFormState extends State<ExpenseForm> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _DescriptionInput(
-                    initialValue: _formData['description'],
-                    isEditPage: _isEditPage,
-                    focusNode: _descriptionFocusNode,
-                    nextFocusNode: _valueFocusNode,
-                    onChanged: (description) {
-                      _formData['description'] = description;
-                      context
-                          .read<ExpenseValidationCubit>()
-                          .validateIncomeForm(_formData);
-                    }),
-                const SizedBox(
-                  height: 16,
-                ),
-                _ValueInput(
-                    initialValue: _formData['value'],
-                    focusNode: _valueFocusNode,
-                    nextFocusNode: _typeFocusNode,
-                    onChanged: (value) {
-                      final newValue = value
-                          .replaceAll('R\$', '')
-                          .replaceAll(RegExp('[^0-9]'), "")
-                          .trim();
-                      _formData['value'] = newValue;
-                      context
-                          .read<ExpenseValidationCubit>()
-                          .validateIncomeForm(_formData);
-                    }),
-                const SizedBox(
-                  height: 16,
-                ),
-                _TypeInput(
-                  initialValue: _formData['type'],
-                  focusNode: _typeFocusNode,
-                  onChanged: (type) {
-                    _formData['type'] = type;
-                    context
-                        .read<ExpenseValidationCubit>()
-                        .validateIncomeForm(_formData);
-                  },
+                  isEditPage: _isEditPage,
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                _ClassificationInput(
-                  initialValue: _formData['classification'],
-                  focusNode: _classificationFocusNode,
-                  onChanged: (classification) {
-                    _formData['classification'] = classification;
-                    context
-                        .read<ExpenseValidationCubit>()
-                        .validateIncomeForm(_formData);
-                  },
-                ),
+                const _ValueInput(),
                 const SizedBox(
                   height: 16,
                 ),
-                _ExpirationDateInput(
-                    controller: _expirationDateController,
-                    formData: _formData,
-                    focusNode: _expirationDateFocusNode,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2022),
-                          lastDate: DateTime(2030),
-                          builder: (context, child) {
-                            return Theme(
-                              child: child!,
-                              data: Theme.of(context).copyWith(
-                                  colorScheme: const ColorScheme.light(
-                                      primary: AppColors.primaryColor,
-                                      onPrimary: AppColors.textColor,
-                                      onSurface: AppColors.textColor)),
-                            );
-                          });
-                      if (pickedDate != null) {
-                        setState(() {
-                          String formattedDate =
-                              DateFormat('dd/MM/yyyy').format(pickedDate);
-                          _expirationDateController.text = formattedDate;
-                          _formData['expiration-date'] =
-                              _expirationDateController.text;
-                        });
-                      }
-                    }),
+                const _TypeInput(),
+                const SizedBox(
+                  height: 16,
+                ),
+                const _ClassificationInput(),
+                const SizedBox(
+                  height: 16,
+                ),
+                const _ExpirationDateInput(),
                 const SizedBox(
                   height: 16,
                 ),
                 _ExpenseFormButton(
-                  formData: _formData,
                   buttonLabel: _textButton,
                   expenseId: widget.expense?.id,
                 )
@@ -226,10 +139,6 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
   _initState() {
     if (widget.expense == null) {
-      _formData['description'] = '';
-      _formData['value'] = '';
-      _expirationDateController.text = '';
-      _formData['expiration-date'] = '';
       BlocProvider.of<FormInteractionCubit>(context, listen: false)
           .formRegister();
     } else {
@@ -237,22 +146,10 @@ class _ExpenseFormState extends State<ExpenseForm> {
       _textButton = 'Editar Despesa';
       _appBarTitle = widget.expense!.description;
       BlocProvider.of<FormInteractionCubit>(context, listen: false).formEdit();
-
-      _formData['description'] = widget.expense!.description;
-      _formData['value'] = AppNumberFormat.getCurrency(widget.expense!.value);
-      _formData['type'] = typeEnumMap[widget.expense!.type]!;
-      _formData['classification'] =
-          classificationEnumMap[widget.expense!.classification]!;
-
-      if (widget.expense!.expirationDate != null) {
-        _expirationDateController.text =
-            DateFormat('dd/MM/yyyy').format(widget.expense!.expirationDate!);
-        _formData['expiration-date'] = _expirationDateController.text;
-      } else {
-        _expirationDateController.text = '';
-        _formData['expiration-date'] = '';
-      }
+      BlocProvider.of<ExpenseFormCubit>(context).updateInputs(widget.expense!);
     }
+
+    BlocProvider.of<ExpenseFormCubit>(context).formInputsListeners();
   }
 
   _showSnackBar(BuildContext context) {
@@ -358,40 +255,36 @@ class _ExpenseFormState extends State<ExpenseForm> {
 }
 
 class _DescriptionInput extends StatelessWidget {
-  final String? initialValue;
-  final FocusNode focusNode;
-  final FocusNode? nextFocusNode;
-  final Function(String)? onChanged;
   final bool isEditPage;
 
-  const _DescriptionInput(
-      {Key? key,
-      required this.initialValue,
-      required this.focusNode,
-      this.nextFocusNode,
-      required this.onChanged,
-      required this.isEditPage})
+  const _DescriptionInput({Key? key, required this.isEditPage})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExpenseValidationCubit, ExpenseValidationState>(
+    return BlocBuilder<ExpenseFormCubit, ExpenseFormState>(
       builder: (context, state) {
         return CustomTextFormField(
+          key: const ValueKey('textField_descriptionExpense'),
           autofocus: isEditPage ? false : true,
-          initialValue: initialValue,
-          focusNode: focusNode,
-          onEditingComplete: nextFocusNode!.requestFocus,
-          onChanged: onChanged,
-          labelText: 'Descrição',
-          textInputAction: TextInputAction.next,
-          validator: (value) {
-            if (state is ExpenseValidating) {
+          initialValue: state.descriptionInput?.value,
+          focusNode: state.descriptionFocusNode,
+          onEditingComplete: state.descriptionFocusNode.nextFocus,
+          onChanged: (description) {
+            context.read<ExpenseFormCubit>().descriptionChanged(description);
+          },
+          validator: (String? description) {
+            if (state.descriptionInput!.invalid) {
               return state.descriptionInput?.onError;
             } else {
               return null;
             }
           },
+          errorText: state.descriptionIsNotValidated!
+              ? state.descriptionInput?.onError
+              : null,
+          labelText: 'Descrição',
+          textInputAction: TextInputAction.next,
         );
       },
     );
@@ -399,42 +292,42 @@ class _DescriptionInput extends StatelessWidget {
 }
 
 class _ValueInput extends StatelessWidget {
-  final String? initialValue;
-  final FocusNode focusNode;
-  final FocusNode? nextFocusNode;
-  final Function(String)? onChanged;
-
   const _ValueInput({
     Key? key,
-    required this.focusNode,
-    this.nextFocusNode,
-    required this.initialValue,
-    required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExpenseValidationCubit, ExpenseValidationState>(
+    return BlocBuilder<ExpenseFormCubit, ExpenseFormState>(
       builder: (context, state) {
         return CustomTextFormField(
+          key: const ValueKey('textField_valueExpense'),
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
             CurrencyTextFormatter()
           ],
-          initialValue: initialValue,
-          focusNode: focusNode,
-          onChanged: onChanged,
-          onEditingComplete: nextFocusNode!.requestFocus,
+          initialValue: state.valueInput?.value,
+          focusNode: state.valueFocusNode,
+          onChanged: (value) {
+            final newValue = value
+                .replaceAll('R\$', '')
+                .replaceAll(RegExp('[^0-9]'), "")
+                .trim();
+            context.read<ExpenseFormCubit>().valueChanged(newValue);
+          },
+          errorText:
+              state.valueIsNotValidated! ? state.valueInput?.onError : null,
+          onEditingComplete: state.valueFocusNode.nextFocus,
           labelText: 'Valor',
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.number,
-          validator: (value) {
-            if (state is ExpenseValidating) {
+          validator: (String? value) {
+            if (state.valueInput!.invalid) {
               return state.valueInput?.onError;
             } else {
               return null;
             }
           },
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.number,
         );
       },
     );
@@ -442,108 +335,135 @@ class _ValueInput extends StatelessWidget {
 }
 
 class _TypeInput extends StatelessWidget {
-  final String? initialValue;
-  final FocusNode focusNode;
-  final Function(String?)? onChanged;
-
   const _TypeInput({
     Key? key,
-    required this.initialValue,
-    required this.focusNode,
-    required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExpenseValidationCubit, ExpenseValidationState>(
+    return BlocBuilder<ExpenseFormCubit, ExpenseFormState>(
       builder: (context, state) {
         return CustomDropDownButton(
-            initialValue: initialValue,
-            hintText: 'Tipo',
-            items: <String>[
-              typeEnumMap[Type.fixed]!,
-              typeEnumMap[Type.nonFixed]!
-            ],
-            onChanged: onChanged,
-            width: double.maxFinite,
-            height: 52);
+          key: const ValueKey('dropField_typeExpense'),
+          initialValue: state.typeInput?.value,
+          focusNode: state.typeFocusNode,
+          onTap: () {
+            state.typeFocusNode.requestFocus();
+          },
+          hintText: 'Tipo',
+          items: <String>[
+            typeEnumMap[Type.fixed]!,
+            typeEnumMap[Type.nonFixed]!
+          ],
+          onChanged: (type) {
+            FocusScope.of(context).requestFocus(FocusNode());
+            context.read<ExpenseFormCubit>().typeChanged(type);
+            state.typeFocusNode.nextFocus();
+          },
+          width: double.maxFinite,
+          errorText:
+              state.typeIsNotValidated! ? state.typeInput?.onError : null,
+        );
       },
     );
   }
 }
 
 class _ClassificationInput extends StatelessWidget {
-  final String? initialValue;
-  final FocusNode focusNode;
-  final Function(String?)? onChanged;
-
   const _ClassificationInput({
     Key? key,
-    required this.initialValue,
-    required this.focusNode,
-    required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExpenseValidationCubit, ExpenseValidationState>(
+    return BlocBuilder<ExpenseFormCubit, ExpenseFormState>(
       builder: (context, state) {
         return CustomDropDownButton(
-            initialValue: initialValue,
-            hintText: 'Classificação',
-            items: <String>[
-              classificationEnumMap[Classification.essential]!,
-              classificationEnumMap[Classification.nonEssential]!
-            ],
-            onChanged: onChanged,
-            width: double.maxFinite,
-            height: 52);
+          key: const ValueKey('dropField_classificationExpense'),
+          initialValue: state.classificationInput?.value,
+          focusNode: state.classificationFocusNode,
+          onTap: () {
+            state.classificationFocusNode.requestFocus();
+          },
+          hintText: 'Classificação',
+          items: <String>[
+            classificationEnumMap[Classification.essential]!,
+            classificationEnumMap[Classification.nonEssential]!
+          ],
+          onChanged: (classification) {
+            FocusScope.of(context).requestFocus(FocusNode());
+            context
+                .read<ExpenseFormCubit>()
+                .classificationChanged(classification);
+            context.read<ExpenseFormCubit>().changeExpirationDateFocus();
+            state.classificationFocusNode.nextFocus();
+          },
+          errorText: state.classificationIsNotValidated!
+              ? state.classificationInput?.onError
+              : null,
+          width: double.maxFinite,
+        );
       },
     );
   }
 }
 
 class _ExpirationDateInput extends StatelessWidget {
-  final String? initialValue;
-  final TextEditingController controller;
-  final Map<String, String?> formData;
-
-  final Function()? onTap;
-
-  final FocusNode focusNode;
-  const _ExpirationDateInput(
-      {Key? key,
-      this.initialValue,
-      required this.controller,
-      required this.formData,
-      required this.focusNode,
-      this.onTap})
-      : super(key: key);
+  const _ExpirationDateInput({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CustomTextFormField(
-      controller: controller,
-      labelText: 'Data de Vencimento',
-      focusNode: focusNode,
-      prefixIcon: const Icon(
-        Icons.calendar_today,
-        color: AppColors.primaryDarkColor,
-      ),
-      readOnly: true,
-      onTap: onTap,
+    return BlocBuilder<ExpenseFormCubit, ExpenseFormState>(
+      builder: (context, state) {
+        return CustomTextFormField(
+          controller: state.expirationDateInput,
+          labelText: 'Data de Vencimento (Opcional)',
+          focusNode: state.expirationDateFocusNode,
+          prefixIcon: const Icon(
+            Icons.calendar_today,
+            color: AppColors.primaryDarkColor,
+          ),
+          readOnly: true,
+          onTap: () async {
+            if (state.classificationIsNotValidated! == false) {
+              state.expirationDateFocusNode.previousFocus();
+            }
+            DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2022),
+                lastDate: DateTime(2030),
+                builder: (context, child) {
+                  return Theme(
+                    child: child!,
+                    data: Theme.of(context).copyWith(
+                        colorScheme: const ColorScheme.light(
+                            primary: AppColors.primaryColor,
+                            onPrimary: AppColors.textColor,
+                            onSurface: AppColors.textColor)),
+                  );
+                });
+            if (pickedDate != null) {
+              String formattedDate =
+                  DateFormat('dd/MM/yyyy').format(pickedDate);
+              context.read<ExpenseFormCubit>().setExpirationDate(formattedDate);
+            }
+            state.expirationDateFocusNode.nextFocus();
+          },
+        );
+      },
     );
   }
 }
 
 class _ExpenseFormButton extends StatelessWidget {
-  final Map<String, String?> formData;
   final String buttonLabel;
   final String? expenseId;
 
   const _ExpenseFormButton({
     Key? key,
-    required this.formData,
     required this.buttonLabel,
     this.expenseId,
   }) : super(key: key);
@@ -552,24 +472,24 @@ class _ExpenseFormButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
 
-    return BlocBuilder<ExpenseValidationCubit, ExpenseValidationState>(
+    return BlocBuilder<ExpenseFormCubit, ExpenseFormState>(
       builder: (context, state) {
         return CustomElevatedButton(
             buttonLabel: buttonLabel,
-            onPressed: state is ExpenseValidated
+            onPressed: state.status == FormStatus.validated
                 ? () {
                     FocusScope.of(context).unfocus();
                     final expense = Expense(
                         id: expenseId,
-                        description: formData['description']!,
-                        value: double.parse(formData['value']!),
-                        classification:
-                            stringToClassification[formData['classification']]!,
-                        type: stringToType[formData['type']]!,
-                        expirationDate: formData['expiration-date'] == ''
+                        description: state.descriptionInput!.value,
+                        value: double.parse(state.valueInput!.value),
+                        classification: stringToClassification[
+                            state.classificationInput!.value]!,
+                        type: stringToType[state.typeInput!.value]!,
+                        expirationDate: state.expirationDateInput?.text == null
                             ? null
                             : DateFormat("dd/MM/yyyy")
-                                .parse(formData['expiration-date']!),
+                                .parse(state.expirationDateInput!.text),
                         user: user);
 
                     context.read<ExpenseCubit>().saveExpense(expense);
