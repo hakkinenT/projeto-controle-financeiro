@@ -7,6 +7,7 @@ class AppColors {
   static const secondaryColor = Color(0xFFFFFFFF);
   static const textColor = Color(0xFF1b1c1e);
   static const grayDarkColor = Color(0xFF4E4F4E);
+  static const grayChartRotulo = Color.fromARGB(255, 104, 104, 104);
   static const grayColor = Color(0xFFB6BBB6);
   static const greyLightColor = Color(0xFFEAEBEA);
   static const chartEssentialColor = Color(0xFFBF38FF);

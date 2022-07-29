@@ -15,9 +15,11 @@ class PrincipalFinancialInformationView extends StatelessWidget {
     return BlocBuilder<InformationPanelCubit, InformationPanelState>(
       builder: (context, state) {
         if (state is InformationPanelSuccess) {
-          return Center(
+          return Container(
+            margin: const EdgeInsets.only(bottom: 10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                     width: 100,
@@ -29,6 +31,9 @@ class PrincipalFinancialInformationView extends StatelessWidget {
                       percentExpenseNonFixed: state.percentExpenseNonFixed,
                       totalExpense: state.totalExpense,
                     )),
+                const SizedBox(
+                  width: 40,
+                ),
                 _FinancialInformation(
                   currentIncome: state.currentIncome,
                   totalExpense: state.totalExpense,
@@ -92,7 +97,7 @@ class _FinancialInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [

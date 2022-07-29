@@ -6,6 +6,7 @@ import '../../../data/models/models.dart';
 
 class CustomPieChart extends StatelessWidget {
   final List<ChartSector> sectors;
+
   const CustomPieChart({Key? key, required this.sectors}) : super(key: key);
 
   @override
@@ -31,10 +32,10 @@ class CustomPieChart extends StatelessWidget {
                   PieChartSectionData(
                       color: AppColors.grayColor,
                       value: 100,
-                      radius: 30,
+                      radius: 25,
                       title: '')
                 ],
-                centerSpaceRadius: 35.0))),
+                centerSpaceRadius: 45.0))),
       );
     }
   }
