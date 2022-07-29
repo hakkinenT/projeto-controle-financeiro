@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
 import '../../../app_exceptions/app_exceptions.dart';
-import '../../../data/form_models/form_models.dart';
+import '../../../data/models/form_models/form_models.dart';
 
 import '../../../data/repositories/repositories.dart';
 

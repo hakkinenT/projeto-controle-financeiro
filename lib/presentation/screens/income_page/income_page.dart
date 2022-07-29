@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_controle_financeiro/form_validator/form_validator.dart';
 import 'package:projeto_controle_financeiro/themes/app_colors.dart';
 
 import '../../../business_logic/business_logic.dart';
@@ -19,7 +20,7 @@ class IncomePage extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider.value(value: BlocProvider.of<IncomeCubit>(context)),
-          BlocProvider(create: (context) => IncomeValidationCubit()),
+          BlocProvider(create: (context) => IncomeFormCubit()),
           BlocProvider(create: (context) => FormInteractionCubit())
         ],
         child: IncomeForm(
@@ -37,12 +38,7 @@ class IncomeForm extends StatefulWidget {
 }
 
 class _IncomeFormState extends State<IncomeForm> {
-  final Map<String, String?> _formData = {};
   bool _isEditPage = false;
-
-  final _descriptionFocusNode = FocusNode();
-  final _valueFocusNode = FocusNode();
-  final _typeFocusNode = FocusNode();
 
   String _appBarTitle = 'Renda';
   String _textButton = 'Cadastrar Renda';
@@ -58,11 +54,6 @@ class _IncomeFormState extends State<IncomeForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_appBarTitle),
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.close)),
         actions: _isEditPage
             ? [
                 IconButton(
@@ -106,55 +97,23 @@ class _IncomeFormState extends State<IncomeForm> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _DescriptionInput(
-                initialValue: _formData['description'],
-                focusNode: _descriptionFocusNode,
-                nextFocusNode: _valueFocusNode,
                 isEditPage: _isEditPage,
-                onChanged: (description) {
-                  _formData['description'] = description;
-                  context
-                      .read<IncomeValidationCubit>()
-                      .validateIncomeForm(_formData);
-                },
               ),
               const SizedBox(
                 height: 16,
               ),
-              _ValueInput(
-                initialValue: _formData['value'],
-                focusNode: _valueFocusNode,
-                nextFocusNode: _typeFocusNode,
-                onChanged: (value) {
-                  final newValue = value
-                      .replaceAll('R\$', '')
-                      .replaceAll(RegExp('[^0-9]'), "")
-                      .trim();
-                  _formData['value'] = newValue;
-                  context
-                      .read<IncomeValidationCubit>()
-                      .validateIncomeForm(_formData);
-                },
-              ),
+              const _ValueInput(),
               const SizedBox(
                 height: 16,
               ),
-              _TypeInput(
-                initialValue: _formData['type'],
-                focusNode: _typeFocusNode,
-                onChanged: (type) {
-                  _formData['type'] = type;
-                  context
-                      .read<IncomeValidationCubit>()
-                      .validateIncomeForm(_formData);
-                },
-              ),
+              const _TypeInput(),
               const SizedBox(
                 height: 16,
               ),
               _IncomeFormButton(
-                  buttonLabel: _textButton,
-                  incomeId: widget.income?.id,
-                  formData: _formData)
+                buttonLabel: _textButton,
+                incomeId: widget.income?.id,
+              )
             ],
           ),
         ),
@@ -164,18 +123,16 @@ class _IncomeFormState extends State<IncomeForm> {
 
   _initState() {
     if (widget.income == null) {
-      _formData['description'] = '';
-      _formData['value'] = '';
       BlocProvider.of<FormInteractionCubit>(context).formRegister();
     } else {
       _isEditPage = true;
       _textButton = 'Editar Renda';
       _appBarTitle = widget.income!.description;
       BlocProvider.of<FormInteractionCubit>(context).formEdit();
-      _formData['description'] = widget.income!.description;
-      _formData['value'] = AppNumberFormat.getCurrency(widget.income!.value);
-      _formData['type'] = typeEnumMap[widget.income!.type]!;
+      BlocProvider.of<IncomeFormCubit>(context).updateInputs(widget.income!);
     }
+
+    BlocProvider.of<IncomeFormCubit>(context).formInputsListeners();
   }
 
   _showSnackBar(BuildContext context) {
@@ -281,38 +238,34 @@ class _IncomeFormState extends State<IncomeForm> {
 }
 
 class _DescriptionInput extends StatelessWidget {
-  final String? initialValue;
-  final FocusNode focusNode;
-  final FocusNode? nextFocusNode;
-  final Function(String)? onChanged;
   final bool isEditPage;
 
-  const _DescriptionInput(
-      {Key? key,
-      required this.initialValue,
-      required this.focusNode,
-      this.nextFocusNode,
-      required this.onChanged,
-      required this.isEditPage})
+  const _DescriptionInput({Key? key, required this.isEditPage})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<IncomeValidationCubit, IncomeValidationState>(
+    return BlocBuilder<IncomeFormCubit, IncomeFormState>(
       builder: (context, state) {
         return CustomTextFormField(
-          initialValue: initialValue,
+          key: const ValueKey('textField_descriptionIncome'),
+          initialValue: state.descriptionInput?.value,
           autofocus: isEditPage ? false : true,
-          validator: (value) {
-            if (state is IncomeValidating) {
+          focusNode: state.descriptionFocusNode,
+          onEditingComplete: state.descriptionFocusNode.nextFocus,
+          onChanged: (description) {
+            context.read<IncomeFormCubit>().descriptionChanged(description);
+          },
+          validator: (String? description) {
+            if (state.descriptionInput!.invalid) {
               return state.descriptionInput?.onError;
             } else {
               return null;
             }
           },
-          focusNode: focusNode,
-          onEditingComplete: nextFocusNode!.requestFocus,
-          onChanged: onChanged,
+          errorText: state.descriptionIsNotValidated!
+              ? state.descriptionInput?.onError
+              : null,
           labelText: 'Descrição',
           textInputAction: TextInputAction.next,
         );
@@ -322,42 +275,43 @@ class _DescriptionInput extends StatelessWidget {
 }
 
 class _ValueInput extends StatelessWidget {
-  final String? initialValue;
-  final FocusNode focusNode;
-  final FocusNode? nextFocusNode;
-  final Function(String)? onChanged;
-
-  const _ValueInput(
-      {Key? key,
-      required this.initialValue,
-      required this.focusNode,
-      this.nextFocusNode,
-      required this.onChanged})
-      : super(key: key);
+  const _ValueInput({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<IncomeValidationCubit, IncomeValidationState>(
+    return BlocBuilder<IncomeFormCubit, IncomeFormState>(
       builder: (context, state) {
         return CustomTextFormField(
+          key: const ValueKey('textFiel_valueIncome'),
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
             CurrencyTextFormatter()
           ],
           labelText: 'Valor',
-          initialValue: initialValue,
-          focusNode: focusNode,
-          validator: (value) {
-            if (state is IncomeValidating) {
+          initialValue: state.valueInput?.value,
+          focusNode: state.valueFocusNode,
+          onEditingComplete: state.valueFocusNode.nextFocus,
+          onChanged: (value) {
+            final newValue = value
+                .replaceAll('R\$', '')
+                .replaceAll(RegExp('[^0-9]'), "")
+                .trim();
+
+            context.read<IncomeFormCubit>().valueChanged(newValue);
+          },
+          validator: (String? value) {
+            if (state.valueInput!.invalid) {
               return state.valueInput?.onError;
             } else {
               return null;
             }
           },
-          onEditingComplete: nextFocusNode!.requestFocus,
-          onChanged: onChanged,
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.number,
+          errorText:
+              state.valueIsNotValidated! ? state.valueInput?.onError : null,
         );
       },
     );
@@ -365,44 +319,47 @@ class _ValueInput extends StatelessWidget {
 }
 
 class _TypeInput extends StatelessWidget {
-  final String? initialValue;
-  final FocusNode focusNode;
-  final Function(String?)? onChanged;
-
   const _TypeInput({
     Key? key,
-    required this.initialValue,
-    required this.focusNode,
-    required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<IncomeValidationCubit, IncomeValidationState>(
+    return BlocBuilder<IncomeFormCubit, IncomeFormState>(
       builder: (context, state) {
         return CustomDropDownButton(
-            hintText: 'Tipo',
-            initialValue: initialValue,
-            items: <String>[
-              typeEnumMap[Type.fixed]!,
-              typeEnumMap[Type.nonFixed]!,
-            ],
-            onChanged: onChanged,
-            width: double.maxFinite,
-            height: 52);
+          key: const ValueKey('dropField_typeIncome'),
+          onTap: () {
+            state.typeFocusNode.requestFocus();
+          },
+          hintText: 'Tipo',
+          initialValue: state.typeInput?.value,
+          focusNode: state.typeFocusNode,
+          items: <String>[
+            typeEnumMap[Type.fixed]!,
+            typeEnumMap[Type.nonFixed]!,
+          ],
+          onChanged: (type) {
+            FocusScope.of(context).requestFocus(FocusNode());
+            context.read<IncomeFormCubit>().typeChanged(type);
+
+            state.typeFocusNode.nextFocus();
+          },
+          errorText:
+              state.typeIsNotValidated! ? state.typeInput?.onError : null,
+          width: double.maxFinite,
+        );
       },
     );
   }
 }
 
 class _IncomeFormButton extends StatelessWidget {
-  final Map<String, String?> formData;
   final String buttonLabel;
   final String? incomeId;
 
   const _IncomeFormButton({
     Key? key,
-    required this.formData,
     this.incomeId,
     required this.buttonLabel,
   }) : super(key: key);
@@ -410,18 +367,18 @@ class _IncomeFormButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
-    return BlocBuilder<IncomeValidationCubit, IncomeValidationState>(
+    return BlocBuilder<IncomeFormCubit, IncomeFormState>(
       builder: (context, state) {
         return CustomElevatedButton(
             buttonLabel: buttonLabel,
-            onPressed: state is IncomeValidated
+            onPressed: state.status == FormStatus.validated
                 ? () {
                     FocusScope.of(context).unfocus();
                     final income = Income(
                         id: incomeId,
-                        description: formData['description']!,
-                        value: double.parse(formData['value']!),
-                        type: stringToType[formData['type']]!,
+                        description: state.descriptionInput!.value,
+                        value: double.parse(state.valueInput!.value),
+                        type: stringToType[state.typeInput!.value]!,
                         user: user);
                     context.read<IncomeCubit>().saveIncome(income);
                   }
